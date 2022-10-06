@@ -59,10 +59,14 @@ function Gate({startTime, windowInSeconds, standName, style, children, ...props}
                     {children.map(child => {
                         let sibt = child.props.inboundFlight.sbt;
                         let sobt = child.props.outboundFlight.sbt;
-                        let left = (getFractionOfWindow(startTime, windowInSeconds, sibt) * 100).toFixed(0) + "%"
-                        let right = (100 - getFractionOfWindow(startTime, windowInSeconds, sobt) * 100).toFixed(0) + "%"
+                        let left = (
+                            getFractionOfWindow(startTime, windowInSeconds, sibt) * 100
+                        ).toFixed(0) + "%"
+                        let right = (
+                            100 - getFractionOfWindow(startTime, windowInSeconds, sobt) * 100
+                        ).toFixed(0) + "%"
 
-                        return React.cloneElement(child, {style: {position: "absolute", left: left, right: right}})
+                        return React.cloneElement(child, {sibtMargin: left, sobtMargin: right})
                     })}
                 </div>
             </div>
