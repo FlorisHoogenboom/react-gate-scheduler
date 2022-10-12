@@ -1,7 +1,7 @@
 const rootStyle = {
-    height: "100%",
-    backgroundColor: "#AA3191"
-}
+    height: '100%',
+    backgroundColor: '#AA3191',
+};
 
 function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargin, ...props}) {
     let computedStyle;
@@ -11,15 +11,15 @@ function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargi
             ...{
                 left: sibtMargin,
                 right: sobtMargin,
-                position: "absolute"
-            }
-        }
+                position: 'absolute',
+            },
+        };
     } else {
         computedStyle = {
             ...rootStyle,
             ...{
-                width: "100%"
-            }
+                width: '100%',
+            },
         };
     }
 

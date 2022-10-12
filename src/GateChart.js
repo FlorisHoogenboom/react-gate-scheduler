@@ -1,46 +1,45 @@
-import Gate from "./Gate";
+import Gate from './Gate';
 
 import data from './data.json';
-import Turnaround from "./Turnaround";
-import moment from "moment";
+import Turnaround from './Turnaround';
 
 
 const rootStyle = {
-    minHeight: "100%",
-    width: "100%",
+    minHeight: '100%',
+    width: '100%',
 };
 
 const pierHeaderStyle = {
-    width: "100%",
-    padding: "10px",
-    boxSizing: "border-box",
-    fontWeight: "bold",
-    fontSize: "20px",
-    verticalAlign: "middle",
-    backgroundColor: "#1B60DB",
-    color: "#FFFFFF"
+    width: '100%',
+    padding: '10px',
+    boxSizing: 'border-box',
+    fontWeight: 'bold',
+    fontSize: '20px',
+    verticalAlign: 'middle',
+    backgroundColor: '#1B60DB',
+    color: '#FFFFFF',
 };
 
 const gateContainerStyle = {
-    padding: "3px"
+    padding: '3px',
 };
 
 const gateStyle = {
-    position: "relative"
+    position: 'relative',
 };
 
 const evenGateStyleEven = {
     ...gateStyle,
-    backgroundColor: "#FFFFFF"
+    backgroundColor: '#FFFFFF',
 };
 
 const eventGateStyleOdd = {
     ...gateStyle,
-    backgroundColor: "#EEEEEE"
+    backgroundColor: '#EEEEEE',
 };
 
 function getStandName(pier, number) {
-    return [pier, number].join("")
+    return [pier, number].join('');
 };
 
 function GateChart({style, startTime, windowInSeconds, ...props}) {
@@ -57,16 +56,17 @@ function GateChart({style, startTime, windowInSeconds, ...props}) {
                                 startTime={startTime}
                                 windowInSeconds={windowInSeconds}
                                 standName={getStandName(pier.name, stand.name)}
+                                // eslint-disable-next-line max-len
                                 style={standIndex % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
                                 {stand.turnarounds.map((turnaround, turnaroundIndex)=>
                                     <Turnaround
                                         key={turnaroundIndex}
                                         inboundFlight={turnaround.inboundFlight}
-                                        outboundFlight={turnaround.outboundFlight}></Turnaround>
+                                        outboundFlight={turnaround.outboundFlight}></Turnaround>,
                                 )}
                             </Gate>
                         </div>)}
-                </div>
+                </div>,
             )}
         </div>
     );
