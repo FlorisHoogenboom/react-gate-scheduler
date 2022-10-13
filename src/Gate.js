@@ -1,4 +1,7 @@
 import React from 'react';
+import {useDrop} from 'react-dnd';
+
+import {DragTypes} from './Constants';
 
 const rootStyle = {
     width: '100%',
@@ -48,8 +51,32 @@ function getFractionOfWindow(startTime, windowInSeconds, timestamp) {
 function Gate(
     {startTime, windowInSeconds, standName, style, children, ...props},
 ) {
+    const [{canDrop, isOver}, dropRef] = useDrop(() => ({
+        accept: DragTypes.FLIGHT,
+        drop: (item, monitor) => {
+            console.log(item);
+        },
+        collect: (monitor) => ({
+            canDrop: !!monitor.canDrop(),
+            isOver: !!monitor.isOver(),
+        }),
+
+    }));
+
+    const getBackgroundColor = (canDrop, isOver) => {
+        if (canDrop && isOver) {
+            return '#fff1dd';
+        }
+    };
+
     return (
-        <div style={{...rootStyle, ...style}}>
+        <div
+            ref={dropRef}
+            style={{
+                ...rootStyle,
+                ...style,
+                'backgroundColor': getBackgroundColor(canDrop, isOver),
+            }}>
             <div style={labelStyle}>
                 {standName}
             </div>

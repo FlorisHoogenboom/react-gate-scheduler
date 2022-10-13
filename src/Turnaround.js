@@ -1,3 +1,8 @@
+import {useDrag} from 'react-dnd';
+
+import {DragTypes} from './Constants';
+
+
 const rootStyle = {
     height: '100%',
     backgroundColor: '#AA3191',
@@ -5,6 +10,14 @@ const rootStyle = {
 
 function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargin, ...props}) {
     let computedStyle;
+
+    const [{isDragging}, drag] = useDrag(() => ({
+        type: DragTypes.FLIGHT,
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    }));
+
     if (sibtMargin && sobtMargin) {
         computedStyle = {
             ...rootStyle,
@@ -25,8 +38,12 @@ function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargi
 
     return (
         <div
-            style={{...computedStyle, ...style}}
-            draggable>
+            ref={drag}
+            style={{
+                ...computedStyle,
+                ...style,
+                ...{opacity: isDragging ? 0.5 : 1},
+            }}>
             {inboundFlight.flightDesignator}/{outboundFlight.flightDesignator}
         </div>
     );

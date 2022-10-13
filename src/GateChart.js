@@ -1,5 +1,7 @@
-import Gate from './Gate';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 
+import Gate from './Gate';
 import data from './data.json';
 import Turnaround from './Turnaround';
 
@@ -44,31 +46,33 @@ function getStandName(pier, number) {
 
 function GateChart({style, startTime, windowInSeconds, ...props}) {
     return (
-        <div style={{...rootStyle, ...style}} >
-            {data.map((pier, pierIndex) =>
-                <div key={pier.name}>
-                    <div style={pierHeaderStyle}>{pier.name}</div>
-                    {pier.stands.map((stand, standIndex) =>
-                        <div
-                            key={getStandName(pier.name, stand.name)}
-                            style={gateContainerStyle}>
-                            <Gate
-                                startTime={startTime}
-                                windowInSeconds={windowInSeconds}
-                                standName={getStandName(pier.name, stand.name)}
-                                // eslint-disable-next-line max-len
-                                style={standIndex % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
-                                {stand.turnarounds.map((turnaround, turnaroundIndex)=>
-                                    <Turnaround
-                                        key={turnaroundIndex}
-                                        inboundFlight={turnaround.inboundFlight}
-                                        outboundFlight={turnaround.outboundFlight}></Turnaround>,
-                                )}
-                            </Gate>
-                        </div>)}
-                </div>,
-            )}
-        </div>
+        <DndProvider backend={HTML5Backend}>
+            <div style={{...rootStyle, ...style}} >
+                {data.map((pier, pierIndex) =>
+                    <div key={pier.name}>
+                        <div style={pierHeaderStyle}>{pier.name}</div>
+                        {pier.stands.map((stand, standIndex) =>
+                            <div
+                                key={getStandName(pier.name, stand.name)}
+                                style={gateContainerStyle}>
+                                <Gate
+                                    startTime={startTime}
+                                    windowInSeconds={windowInSeconds}
+                                    standName={getStandName(pier.name, stand.name)}
+                                    // eslint-disable-next-line max-len
+                                    style={standIndex % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
+                                    {stand.turnarounds.map((turnaround, turnaroundIndex)=>
+                                        <Turnaround
+                                            key={turnaroundIndex}
+                                            inboundFlight={turnaround.inboundFlight}
+                                            outboundFlight={turnaround.outboundFlight}></Turnaround>,
+                                    )}
+                                </Gate>
+                            </div>)}
+                    </div>,
+                )}
+            </div>
+        </DndProvider>
     );
 }
 
