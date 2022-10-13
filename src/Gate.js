@@ -70,10 +70,10 @@ function Gate(
     };
 
 
-    if (isOver) {
+    if (canDrop && isOver) {
         highlightRootStyle = {
             backgroundColor: theme.highlightColor,
-        }
+        };
     }
 
     return (
@@ -82,7 +82,7 @@ function Gate(
             style={{
                 ...rootStyle,
                 ...style,
-                ...highlightRootStyle
+                ...highlightRootStyle,
             }}>
             <div style={labelStyle}>
                 {standName}
