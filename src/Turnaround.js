@@ -1,15 +1,21 @@
 import {useDrag} from 'react-dnd';
 
 import {DragTypes} from './Constants';
+import {useTheme} from './theming';
 
-
-const rootStyle = {
-    height: '100%',
-    backgroundColor: '#AA3191',
-};
 
 function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargin, ...props}) {
-    let computedStyle;
+    const theme = useTheme();
+
+    const rootStyle = {
+        height: '100%',
+        paddingLeft: '10px',
+        verticalAlign: 'middle',
+        borderRadius: '25px',
+        transform: 'translate(0, 0)', // Needed for proper rendering
+        fontSize: '12px',
+        backgroundColor: theme.tertiaryColor,
+    };
 
     const [{isDragging}, drag] = useDrag(() => ({
         type: DragTypes.FLIGHT,
@@ -17,6 +23,8 @@ function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargi
             isDragging: !!monitor.isDragging(),
         }),
     }));
+
+    let computedStyle;
 
     if (sibtMargin && sobtMargin) {
         computedStyle = {

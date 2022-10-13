@@ -2,44 +2,8 @@ import React from 'react';
 import {useDrop} from 'react-dnd';
 
 import {DragTypes} from './Constants';
+import {useTheme} from './theming';
 
-const rootStyle = {
-    width: '100%',
-    height: '40px',
-    display: 'flex',
-    boxSizing: 'border-box',
-    position: 'relative',
-};
-
-const labelStyle = {
-    float: 'left',
-    display: 'block',
-    height: '100%',
-    padding: '3px',
-    boxSizing: 'border-box',
-    borderRight: '1px solid black',
-    userSelect: 'none',
-    writingMode: 'vertical-lr',
-    textAlign: 'center',
-    backgroundColor: '#141251',
-    color: '#FFFFFF',
-};
-
-const timelineStyle = {
-    height: '100%',
-    width: '100%',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    boxSizing: 'border-box',
-    position: 'relative',
-};
-
-const innerTimelineStyle = {
-    position: 'relative',
-    height: '100%',
-    width: '100%',
-    overflow: 'hidden',
-};
 
 function getFractionOfWindow(startTime, windowInSeconds, timestamp) {
     const windowInMs = windowInSeconds * 1000;
@@ -51,6 +15,8 @@ function getFractionOfWindow(startTime, windowInSeconds, timestamp) {
 function Gate(
     {startTime, windowInSeconds, standName, style, children, ...props},
 ) {
+    const theme = useTheme();
+
     const [{canDrop, isOver}, dropRef] = useDrop(() => ({
         accept: DragTypes.FLIGHT,
         drop: (item, monitor) => {
@@ -63,11 +29,52 @@ function Gate(
 
     }));
 
-    const getBackgroundColor = (canDrop, isOver) => {
-        if (canDrop && isOver) {
-            return '#fff1dd';
-        }
+    const rootStyle = {
+        width: '100%',
+        height: '40px',
+        display: 'flex',
+        boxSizing: 'border-box',
+        position: 'relative',
     };
+
+    let highlightRootStyle = {};
+
+    const labelStyle = {
+        float: 'left',
+        display: 'block',
+        height: '100%',
+        padding: '3px',
+        boxSizing: 'border-box',
+        borderRight: '1px solid black',
+        userSelect: 'none',
+        writingMode: 'vertical-lr',
+        textAlign: 'center',
+        backgroundColor: theme.secondaryColor,
+        color: '#FFFFFF',
+    };
+
+    const timelineStyle = {
+        height: '100%',
+        width: '100%',
+        paddingTop: '10px',
+        paddingBottom: '10px',
+        boxSizing: 'border-box',
+        position: 'relative',
+    };
+
+    const innerTimelineStyle = {
+        position: 'relative',
+        height: '100%',
+        width: '100%',
+        overflow: 'hidden',
+    };
+
+
+    if (isOver) {
+        highlightRootStyle = {
+            backgroundColor: theme.highlightColor,
+        }
+    }
 
     return (
         <div
@@ -75,7 +82,7 @@ function Gate(
             style={{
                 ...rootStyle,
                 ...style,
-                'backgroundColor': getBackgroundColor(canDrop, isOver),
+                ...highlightRootStyle
             }}>
             <div style={labelStyle}>
                 {standName}

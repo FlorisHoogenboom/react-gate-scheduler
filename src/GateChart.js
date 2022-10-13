@@ -4,47 +4,50 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import Gate from './Gate';
 import data from './data.json';
 import Turnaround from './Turnaround';
+import {useTheme} from './theming';
 
-
-const rootStyle = {
-    minHeight: '100%',
-    width: '100%',
-};
-
-const pierHeaderStyle = {
-    width: '100%',
-    padding: '10px',
-    boxSizing: 'border-box',
-    fontWeight: 'bold',
-    fontSize: '20px',
-    verticalAlign: 'middle',
-    backgroundColor: '#1B60DB',
-    color: '#FFFFFF',
-};
-
-const gateContainerStyle = {
-    padding: '3px',
-};
-
-const gateStyle = {
-    position: 'relative',
-};
-
-const evenGateStyleEven = {
-    ...gateStyle,
-    backgroundColor: '#FFFFFF',
-};
-
-const eventGateStyleOdd = {
-    ...gateStyle,
-    backgroundColor: '#EEEEEE',
-};
 
 function getStandName(pier, number) {
     return [pier, number].join('');
 };
 
 function GateChart({style, startTime, windowInSeconds, ...props}) {
+    const theme = useTheme();
+
+    const rootStyle = {
+        minHeight: '100%',
+        width: '100%',
+    };
+
+    const pierHeaderStyle = {
+        width: '100%',
+        padding: '10px',
+        boxSizing: 'border-box',
+        fontWeight: 'bold',
+        fontSize: '20px',
+        verticalAlign: 'middle',
+        backgroundColor: theme.primaryColor,
+        color: theme.lightTextColor,
+    };
+
+    const gateContainerStyle = {
+        padding: '3px',
+    };
+
+    const gateStyle = {
+        position: 'relative',
+    };
+
+    const evenGateStyleEven = {
+        ...gateStyle,
+        backgroundColor: '#FFFFFF',
+    };
+
+    const eventGateStyleOdd = {
+        ...gateStyle,
+        backgroundColor: '#EEEEEE',
+    };
+
     return (
         <DndProvider backend={HTML5Backend}>
             <div style={{...rootStyle, ...style}} >
