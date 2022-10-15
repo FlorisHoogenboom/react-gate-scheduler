@@ -1,17 +1,47 @@
+import _ from 'lodash';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 
 import Gate from './Gate';
-import data from './data.json';
+import gateConfig from './gateConfig.json';
+import baseTurnarounds from './turnarounds.json';
 import Turnaround from './Turnaround';
 import {useTheme} from './theming';
+import {useEffect, useState} from 'react';
 
 
-function getStandName(pier, number) {
-    return [pier, number].join('');
-};
+function toNestedStructure(gateConfig, tunrarounds) {
+    let result = _.cloneDeep(gateConfig);
+
+    for (const [turnaroundId, turnaround] of Object.entries(tunrarounds)) {
+        let pier = turnaround['pier'];
+        let stand = turnaround['stand'];
+
+        if (!!!result[pier]['stands'][stand]['turnarounds']) {
+            result[pier]['stands'][stand]['turnarounds'] = [];
+        }
+        result[pier]['stands'][stand]['turnarounds'].push({
+            ...turnaround,
+            turnaroundId,
+        });
+    }
+
+    return result;
+}
 
 function GateChart({style, startTime, windowInSeconds, ...props}) {
+    const [turnarounds, setTurnarounds] = useState(baseTurnarounds);
+
+    const assignTurnaroundToStand = (turnaroundId, pierId, standId) => {
+        setTurnarounds((prevState) => {
+            let result = _.cloneDeep(prevState);
+            result[turnaroundId]['pier'] = pierId;
+            result[turnaroundId]['stand'] = standId;
+
+            return result;
+        });
+    };
+
     const theme = useTheme();
 
     const rootStyle = {
@@ -51,22 +81,26 @@ function GateChart({style, startTime, windowInSeconds, ...props}) {
     return (
         <DndProvider backend={HTML5Backend}>
             <div style={{...rootStyle, ...style}} >
-                {data.map((pier, pierIndex) =>
-                    <div key={pier.name}>
+                {!!turnarounds && Object.entries(toNestedStructure(gateConfig, turnarounds)).map(([pierId, pier]) =>
+                    <div key={pierId}>
                         <div style={pierHeaderStyle}>{pier.name}</div>
-                        {pier.stands.map((stand, standIndex) =>
+                        {Object.entries(pier.stands).map(([standId, stand], i)=>
                             <div
-                                key={getStandName(pier.name, stand.name)}
+                                key={standId}
                                 style={gateContainerStyle}>
                                 <Gate
                                     startTime={startTime}
                                     windowInSeconds={windowInSeconds}
-                                    standName={getStandName(pier.name, stand.name)}
+                                    pierId={pierId}
+                                    standId={standId}
+                                    standName={stand.name}
+                                    dropTurnaroundHandler={assignTurnaroundToStand}
                                     // eslint-disable-next-line max-len
-                                    style={standIndex % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
-                                    {stand.turnarounds.map((turnaround, turnaroundIndex)=>
+                                    style={i % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
+                                    {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=>
                                         <Turnaround
-                                            key={turnaroundIndex}
+                                            key={turnaround.turnaroundId}
+                                            turnaroundId={turnaround.turnaroundId}
                                             inboundFlight={turnaround.inboundFlight}
                                             outboundFlight={turnaround.outboundFlight}></Turnaround>,
                                     )}

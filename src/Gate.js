@@ -13,14 +13,14 @@ function getFractionOfWindow(startTime, windowInSeconds, timestamp) {
 }
 
 function Gate(
-    {startTime, windowInSeconds, standName, style, children, ...props},
+    {startTime, windowInSeconds, pierId, standId, standName, dropTurnaroundHandler, style, children, ...props},
 ) {
     const theme = useTheme();
 
     const [{canDrop, isOver}, dropRef] = useDrop(() => ({
         accept: DragTypes.FLIGHT,
         drop: (item, monitor) => {
-            console.log(item);
+            dropTurnaroundHandler(item.turnaroundId, pierId, standId);
         },
         collect: (monitor) => ({
             canDrop: !!monitor.canDrop(),
@@ -90,7 +90,7 @@ function Gate(
 
             <div style={timelineStyle}>
                 <div style={innerTimelineStyle}>
-                    {children.map((child) => {
+                    {!!children && children.map((child) => {
                         const sibt = child.props.inboundFlight.sbt;
                         const sobt = child.props.outboundFlight.sbt;
                         const left = (

@@ -4,7 +4,7 @@ import {DragTypes} from './Constants';
 import {useTheme} from './theming';
 
 
-function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargin, ...props}) {
+function Turnaround({style, turnaroundId, inboundFlight, outboundFlight, sibtMargin, sobtMargin, ...props}) {
     const theme = useTheme();
 
     const rootStyle = {
@@ -22,6 +22,7 @@ function Turnaround({style, inboundFlight, outboundFlight, sibtMargin, sobtMargi
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
+        item: {turnaroundId},
     }));
 
     let computedStyle;
