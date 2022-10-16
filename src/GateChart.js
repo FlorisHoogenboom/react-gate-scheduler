@@ -7,15 +7,15 @@ import gateConfig from './gateConfig.json';
 import baseTurnarounds from './turnarounds.json';
 import Turnaround from './Turnaround';
 import {useTheme} from './theming';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 
 
 function toNestedStructure(gateConfig, tunrarounds) {
-    let result = _.cloneDeep(gateConfig);
+    const result = _.cloneDeep(gateConfig);
 
     for (const [turnaroundId, turnaround] of Object.entries(tunrarounds)) {
-        let pier = turnaround['pier'];
-        let stand = turnaround['stand'];
+        const pier = turnaround['pier'];
+        const stand = turnaround['stand'];
 
         if (!!!result[pier]['stands'][stand]['turnarounds']) {
             result[pier]['stands'][stand]['turnarounds'] = [];
@@ -29,12 +29,20 @@ function toNestedStructure(gateConfig, tunrarounds) {
     return result;
 }
 
-function GateChart({style, startTime, windowInSeconds, ...props}) {
+function GateChart({
+    style,
+    startTime,
+    backwardWindowInSeconds,
+    forwardWindowInSeconds,
+    data,
+    showEmptyStands,
+    ...props
+}) {
     const [turnarounds, setTurnarounds] = useState(baseTurnarounds);
 
     const assignTurnaroundToStand = (turnaroundId, pierId, standId) => {
         setTurnarounds((prevState) => {
-            let result = _.cloneDeep(prevState);
+            const result = _.cloneDeep(prevState);
             result[turnaroundId]['pier'] = pierId;
             result[turnaroundId]['stand'] = standId;
 
@@ -90,7 +98,8 @@ function GateChart({style, startTime, windowInSeconds, ...props}) {
                                 style={gateContainerStyle}>
                                 <Gate
                                     startTime={startTime}
-                                    windowInSeconds={windowInSeconds}
+                                    backwardWindowInSeconds={backwardWindowInSeconds}
+                                    forwardWindowInSeconds={forwardWindowInSeconds}
                                     pierId={pierId}
                                     standId={standId}
                                     standName={stand.name}

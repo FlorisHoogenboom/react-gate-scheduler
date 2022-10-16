@@ -1,11 +1,16 @@
 import GateChart from './GateChart';
 import {ThemeProvider} from './theming';
-import {useEffect, useState} from "react";
+import {useEffect, useState} from 'react';
+import {
+    DefaultBackwardWindowInSeconds,
+    DefaultFowardWindowInSeconds,
+    StartTime
+} from './Constants';
 
 function App() {
     const [time, setTime] = useState(
-        () => new Date('2022-01-01T09:30:00+00:00')
-    )
+        () => StartTime,
+    );
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -24,7 +29,8 @@ function App() {
             <div style={{display: 'flex'}}>
                 <GateChart
                     startTime={time}
-                    windowInSeconds={3600 * 2}></GateChart>
+                    forwardWindowInSeconds={DefaultFowardWindowInSeconds}
+                    backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
                 <div style={{width: '250px'}}>
                     My Warnings pane!
                 </div>

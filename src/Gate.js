@@ -5,16 +5,30 @@ import {DragTypes} from './Constants';
 import {useTheme} from './theming';
 
 
-function getFractionOfWindow(startTime, windowInSeconds, timestamp) {
-    const windowInMs = windowInSeconds * 1000;
+function getFractionOfWindow(
+    startTime, backwardWindowInSeconds,
+    forwardWindowInSeconds, timestamp,
+) {
+    const totalWindowInMs = (backwardWindowInSeconds + forwardWindowInSeconds) * 1000;
     timestamp = new Date(timestamp);
+    startTime = new Date(startTime);
+    startTime.setSeconds(startTime.getSeconds() - backwardWindowInSeconds);
 
-    return (timestamp - startTime) / windowInMs;
+    return (timestamp - startTime) / totalWindowInMs;
 }
 
-function Gate(
-    {startTime, windowInSeconds, pierId, standId, standName, dropTurnaroundHandler, style, children, ...props},
-) {
+function Gate({
+    startTime,
+    backwardWindowInSeconds,
+    forwardWindowInSeconds,
+    pierId,
+    standId,
+    standName,
+    dropTurnaroundHandler,
+    style,
+    children,
+    ...props
+}) {
     const theme = useTheme();
 
     const [{canDrop, isOver}, dropRef] = useDrop(() => ({
@@ -69,6 +83,15 @@ function Gate(
         overflow: 'hidden',
     };
 
+    const currentTimeBarStyle = {
+        height: '100%',
+        position: 'absolute',
+        borderLeft: '2px dashed #000000',
+        left: (
+            getFractionOfWindow(startTime, backwardWindowInSeconds, forwardWindowInSeconds, startTime) * 100
+        ).toFixed(2) + '%',
+    };
+
 
     if (canDrop && isOver) {
         highlightRootStyle = {
@@ -94,10 +117,11 @@ function Gate(
                         const sibt = child.props.inboundFlight.sbt;
                         const sobt = child.props.outboundFlight.sbt;
                         const left = (
-                            getFractionOfWindow(startTime, windowInSeconds, sibt) * 100
+                            getFractionOfWindow(startTime, backwardWindowInSeconds, forwardWindowInSeconds, sibt) * 100
                         ).toFixed(2) + '%';
                         const right = (
-                            100 - getFractionOfWindow(startTime, windowInSeconds, sobt) * 100
+                            100 -
+                            getFractionOfWindow(startTime, backwardWindowInSeconds, forwardWindowInSeconds, sobt) * 100
                         ).toFixed(2) + '%';
 
                         return React.cloneElement(
@@ -107,6 +131,8 @@ function Gate(
                     })}
                 </div>
             </div>
+
+            <div style={currentTimeBarStyle}></div>
 
         </div>
     );
