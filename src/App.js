@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {
     DefaultBackwardWindowInSeconds,
     DefaultFowardWindowInSeconds,
-    StartTime
+    StartTime,
 } from './Constants';
 
 function App() {
