@@ -95,10 +95,10 @@ function Gate(
                         const sobt = child.props.outboundFlight.sbt;
                         const left = (
                             getFractionOfWindow(startTime, windowInSeconds, sibt) * 100
-                        ).toFixed(0) + '%';
+                        ).toFixed(2) + '%';
                         const right = (
                             100 - getFractionOfWindow(startTime, windowInSeconds, sobt) * 100
-                        ).toFixed(0) + '%';
+                        ).toFixed(2) + '%';
 
                         return React.cloneElement(
                             child,
