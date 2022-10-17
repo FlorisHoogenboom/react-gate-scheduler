@@ -35,7 +35,7 @@ function GateChart({
     backwardWindowInSeconds,
     forwardWindowInSeconds,
     data,
-    showEmptyStands,
+    hideEmpty,
     ...props
 }) {
     const [turnarounds, setTurnarounds] = useState(baseTurnarounds);
@@ -104,6 +104,7 @@ function GateChart({
                                     standId={standId}
                                     standName={stand.name}
                                     dropTurnaroundHandler={assignTurnaroundToStand}
+                                    hideWhenEmpty={hideEmpty} // TODO: this stil has bugs for non visible ta's
                                     // eslint-disable-next-line max-len
                                     style={i % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
                                     {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=>

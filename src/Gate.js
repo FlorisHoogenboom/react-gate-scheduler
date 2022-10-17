@@ -26,6 +26,7 @@ function Gate({
     standName,
     dropTurnaroundHandler,
     style,
+    hideWhenEmpty,
     children,
     ...props
 }) {
@@ -100,41 +101,50 @@ function Gate({
     }
 
     return (
-        <div
-            ref={dropRef}
-            style={{
-                ...rootStyle,
-                ...style,
-                ...highlightRootStyle,
-            }}>
-            <div style={labelStyle}>
-                {standName}
-            </div>
+        <>
+            {((!children || !children.length) && hideWhenEmpty) ?
+                (
+                    <></>
+                ) : (
+                    <div
+                        ref={dropRef}
+                        style={{
+                            ...rootStyle,
+                            ...style,
+                            ...highlightRootStyle,
+                        }}>
+                        <div style={labelStyle}>
+                            {standName}
+                        </div>
 
-            <div style={timelineStyle}>
-                <div style={innerTimelineStyle}>
-                    {!!children && children.map((child) => {
-                        const sibt = child.props.inboundFlight.sbt;
-                        const sobt = child.props.outboundFlight.sbt;
-                        const left = (
-                            getFractionOfWindow(startTime, backwardWindowInSeconds, forwardWindowInSeconds, sibt) * 100
-                        ).toFixed(2) + '%';
-                        const right = (
-                            100 -
-                            getFractionOfWindow(startTime, backwardWindowInSeconds, forwardWindowInSeconds, sobt) * 100
-                        ).toFixed(2) + '%';
+                        <div style={timelineStyle}>
+                            <div style={innerTimelineStyle}>
+                                {!!children && children.map((child) => {
+                                    const sibt = child.props.inboundFlight.sbt;
+                                    const sobt = child.props.outboundFlight.sbt;
+                                    const startFraction = getFractionOfWindow(
+                                        startTime, backwardWindowInSeconds, forwardWindowInSeconds, sibt,
+                                    );
+                                    const endFraction = getFractionOfWindow(
+                                        startTime, backwardWindowInSeconds, forwardWindowInSeconds, sobt
+                                    );
+                                    const left = (startFraction * 100).toFixed(2) + '%';
+                                    const right = (100 - endFraction * 100).toFixed(2) + '%';
 
-                        return React.cloneElement(
-                            child,
-                            {sibtMargin: left, sobtMargin: right},
-                        );
-                    })}
-                </div>
-            </div>
+                                    return React.cloneElement(
+                                        child,
+                                        {sibtMargin: left, sobtMargin: right},
+                                    );
+                                })}
+                            </div>
+                        </div>
 
-            <div style={currentTimeBarStyle}></div>
+                        <div style={currentTimeBarStyle}></div>
 
-        </div>
+                    </div>
+                )}
+
+            </>
     );
 }
 
