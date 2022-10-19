@@ -1,6 +1,4 @@
 import _ from 'lodash';
-import {DndProvider} from 'react-dnd';
-import {HTML5Backend} from 'react-dnd-html5-backend';
 
 import Gate from './Gate';
 import gateConfig from './gateConfig.json';

@@ -45,9 +45,6 @@ function App() {
                             backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
 
                     </div>
-                    <div style={{width: '250px'}}>
-                        My Warnings pane!
-                    </div>
                 </div>
             </DndProvider>
         </ThemeProvider>
