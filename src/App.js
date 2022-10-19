@@ -1,11 +1,16 @@
-import GateChart from './GateChart';
-import {ThemeProvider} from './theming';
 import {useEffect, useState} from 'react';
 import {
     DefaultBackwardWindowInSeconds,
     DefaultFowardWindowInSeconds,
     StartTime,
 } from './Constants';
+
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import {DndProvider} from 'react-dnd';
+
+import {ThemeProvider} from './theming';
+import GateChart from './GateChart';
+import DropArea from './DropArea';
 
 function App() {
     const [time, setTime] = useState(
@@ -26,15 +31,25 @@ function App() {
 
     return (
         <ThemeProvider>
-            <div style={{display: 'flex'}}>
-                <GateChart
-                    startTime={time}
-                    forwardWindowInSeconds={DefaultFowardWindowInSeconds}
-                    backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
-                <div style={{width: '250px'}}>
-                    My Warnings pane!
+            <DndProvider backend={HTML5Backend}>
+                <div style={{display: 'flex'}}>
+                    <div style={{width: '100%'}}>
+                        <div style={{width: '100%', height: '100px', padding: '20px', boxSizing: 'border-box'}}>
+                            <DropArea
+                                text="Add to watchlist"></DropArea>
+
+                        </div>
+                        <GateChart
+                            startTime={time}
+                            forwardWindowInSeconds={DefaultFowardWindowInSeconds}
+                            backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
+
+                    </div>
+                    <div style={{width: '250px'}}>
+                        My Warnings pane!
+                    </div>
                 </div>
-            </div>
+            </DndProvider>
         </ThemeProvider>
     );
 }

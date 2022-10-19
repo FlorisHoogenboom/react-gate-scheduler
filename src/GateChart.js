@@ -53,7 +53,6 @@ function GateChart({
     const theme = useTheme();
 
     const rootStyle = {
-        minHeight: '100%',
         width: '100%',
     };
 
@@ -87,39 +86,37 @@ function GateChart({
     };
 
     return (
-        <DndProvider backend={HTML5Backend}>
-            <div style={{...rootStyle, ...style}} >
-                {!!turnarounds && Object.entries(toNestedStructure(gateConfig, turnarounds)).map(([pierId, pier]) =>
-                    <div key={pierId}>
-                        <div style={pierHeaderStyle}>{pier.name}</div>
-                        {Object.entries(pier.stands).map(([standId, stand], i)=>
-                            <div
-                                key={standId}
-                                style={gateContainerStyle}>
-                                <Gate
-                                    startTime={startTime}
-                                    backwardWindowInSeconds={backwardWindowInSeconds}
-                                    forwardWindowInSeconds={forwardWindowInSeconds}
-                                    pierId={pierId}
-                                    standId={standId}
-                                    standName={stand.name}
-                                    dropTurnaroundHandler={assignTurnaroundToStand}
-                                    hideWhenEmpty={hideEmpty} // TODO: this stil has bugs for non visible ta's
-                                    // eslint-disable-next-line max-len
-                                    style={i % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
-                                    {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=>
-                                        <Turnaround
-                                            key={turnaround.turnaroundId}
-                                            turnaroundId={turnaround.turnaroundId}
-                                            inboundFlight={turnaround.inboundFlight}
-                                            outboundFlight={turnaround.outboundFlight}></Turnaround>,
-                                    )}
-                                </Gate>
-                            </div>)}
-                    </div>,
-                )}
-            </div>
-        </DndProvider>
+        <div style={{...rootStyle, ...style}} >
+            {!!turnarounds && Object.entries(toNestedStructure(gateConfig, turnarounds)).map(([pierId, pier]) =>
+                <div key={pierId}>
+                    <div style={pierHeaderStyle}>{pier.name}</div>
+                    {Object.entries(pier.stands).map(([standId, stand], i)=>
+                        <div
+                            key={standId}
+                            style={gateContainerStyle}>
+                            <Gate
+                                startTime={startTime}
+                                backwardWindowInSeconds={backwardWindowInSeconds}
+                                forwardWindowInSeconds={forwardWindowInSeconds}
+                                pierId={pierId}
+                                standId={standId}
+                                standName={stand.name}
+                                dropTurnaroundHandler={assignTurnaroundToStand}
+                                hideWhenEmpty={hideEmpty} // TODO: this stil has bugs for non visible ta's
+                                // eslint-disable-next-line max-len
+                                style={i % 2 === 0 ? evenGateStyleEven : eventGateStyleOdd}>
+                                {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=>
+                                    <Turnaround
+                                        key={turnaround.turnaroundId}
+                                        turnaroundId={turnaround.turnaroundId}
+                                        inboundFlight={turnaround.inboundFlight}
+                                        outboundFlight={turnaround.outboundFlight}></Turnaround>,
+                                )}
+                            </Gate>
+                        </div>)}
+                </div>,
+            )}
+        </div>
     );
 }
 
