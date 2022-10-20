@@ -15,7 +15,7 @@ function DropArea({
     const [{canDrop, isOver}, dropRef] = useDrop(() => ({
         accept: DragTypes.FLIGHT,
         drop: (item, monitor) => {
-            console.log(item)
+            console.log(item);
         },
         collect: (monitor) => ({
             canDrop: !!monitor.canDrop(),
@@ -39,7 +39,7 @@ function DropArea({
         verticalAlign: 'middle',
     };
 
-    if (isOver) {
+    if (isOver && canDrop) {
         rootStyle = {
             ...rootStyle,
             backgroundColor: theme.highlightColor,

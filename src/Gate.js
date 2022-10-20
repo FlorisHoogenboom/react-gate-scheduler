@@ -127,7 +127,7 @@ function Gate({
                                         startTime, backwardWindowInSeconds, forwardWindowInSeconds, sibt,
                                     );
                                     const endFraction = getFractionOfWindow(
-                                        startTime, backwardWindowInSeconds, forwardWindowInSeconds, sobt
+                                        startTime, backwardWindowInSeconds, forwardWindowInSeconds, sobt,
                                     );
                                     const left = (startFraction * 100).toFixed(2) + '%';
                                     const right = (100 - endFraction * 100).toFixed(2) + '%';

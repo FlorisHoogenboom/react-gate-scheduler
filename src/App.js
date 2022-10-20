@@ -60,7 +60,7 @@ function App() {
                 </div>
 
 
-                <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+                <AppBar position="fixed" color="primary" sx={{top: 'auto', bottom: 0}}>
                     <BottomNavigation
                         onChange={(event, value) => setView(value)}
                         value={view}
