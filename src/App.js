@@ -1,22 +1,32 @@
 import {useEffect, useState} from 'react';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import {DndProvider} from 'react-dnd';
+import {ThemeProvider} from '@mui/material/styles';
+import {
+    AppBar,
+    BottomNavigation,
+    BottomNavigationAction, Card,
+    Stack,
+} from '@mui/material';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
+
 import {
     DefaultBackwardWindowInSeconds,
     DefaultFowardWindowInSeconds,
     StartTime,
 } from './Constants';
-
-import {HTML5Backend} from 'react-dnd-html5-backend';
-import {DndProvider} from 'react-dnd';
-
-import {ThemeProvider} from './theming';
 import GateChart from './GateChart';
 import DropArea from './DropArea';
-import {FormControl, FormControlLabel, FormGroup, FormLabel, Switch} from "@mui/material";
+import {theme} from './theming';
+
 
 function App() {
     const [time, setTime] = useState(
         () => StartTime,
     );
+
+    const [view, setView] = useState(() => 'watchlist');
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -31,33 +41,40 @@ function App() {
     }, []);
 
     return (
-        <ThemeProvider>
+        <ThemeProvider theme={theme}>
             <DndProvider backend={HTML5Backend}>
-                <div>
-                    <div style={{borderBottom: '10px solid #000000'}}>
-                        <FormControl component="fieldset">
-                            <FormGroup aria-label="position" row>
-                                <FormControlLabel
-                                    value="start"
-                                    control={<Switch color="primary" />}
-                                    label="Show watchlist only"
-                                    labelPlacement="start"
-                                />
-                            </FormGroup>
-                        </FormControl>
-                    </div>
-                    <div>
-                        <div style={{height: '100px', padding: '20px', boxSizing: 'border-box'}}>
-                            <DropArea
-                                text="Add to watchlist"></DropArea>
-                        </div>
+                <div hidden={view === 'watchlist'}>
+                    <Stack
+                        spacing={2}>
+                        <Card elevation={3}>
+                            <div style={{height: '100px', padding: '20px 20px 20px 20px', boxSizing: 'border-box'}}>
+                                <DropArea
+                                    text="Add to watchlist"></DropArea>
+                            </div>
+                        </Card>
                         <GateChart
                             startTime={time}
                             forwardWindowInSeconds={DefaultFowardWindowInSeconds}
                             backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
-
-                    </div>
+                    </Stack>
                 </div>
+
+
+                <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+                    <BottomNavigation
+                        onChange={(event, value) => setView(value)}
+                        value={view}
+                        showLabels>
+                        <BottomNavigationAction
+                            value="full"
+                            label="Full view"
+                            icon={<AlignHorizontalLeftIcon />}/>
+                        <BottomNavigationAction
+                            value="watchlist"
+                            label="Watchlist"
+                            icon={<NotificationsActiveIcon />}/>
+                    </BottomNavigation>
+                </AppBar>
             </DndProvider>
         </ThemeProvider>
     );

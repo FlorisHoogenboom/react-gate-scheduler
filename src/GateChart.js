@@ -1,11 +1,11 @@
 import _ from 'lodash';
+import {useTheme} from '@mui/material/styles';
+import {useState} from 'react';
 
 import Gate from './Gate';
 import gateConfig from './gateConfig.json';
 import baseTurnarounds from './turnarounds.json';
 import Turnaround from './Turnaround';
-import {useTheme} from './theming';
-import {useState} from 'react';
 
 
 function toNestedStructure(gateConfig, tunrarounds) {
@@ -61,8 +61,8 @@ function GateChart({
         fontWeight: 'bold',
         fontSize: '20px',
         verticalAlign: 'middle',
-        backgroundColor: theme.primaryColor,
-        color: theme.lightTextColor,
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
     };
 
     const gateContainerStyle = {

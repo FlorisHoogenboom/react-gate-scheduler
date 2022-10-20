@@ -1,7 +1,7 @@
 import {useDrag} from 'react-dnd';
 
 import {DragTypes} from './Constants';
-import {useTheme} from './theming';
+import {useTheme} from '@mui/material/styles';
 
 
 function Turnaround({style, turnaroundId, inboundFlight, outboundFlight, sibtMargin, sobtMargin, ...props}) {
@@ -14,7 +14,7 @@ function Turnaround({style, turnaroundId, inboundFlight, outboundFlight, sibtMar
         borderRadius: '25px',
         transform: 'translate(0, 0)', // Needed for proper rendering
         fontSize: '12px',
-        backgroundColor: theme.tertiaryColor,
+        backgroundColor: theme.palette.primary.light,
     };
 
     const [{isDragging}, drag] = useDrag(() => ({

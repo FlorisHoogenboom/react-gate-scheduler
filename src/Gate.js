@@ -1,8 +1,8 @@
 import React from 'react';
-import {useDrop} from 'react-dnd';
+import {useTheme} from '@mui/material/styles';
 
+import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
-import {useTheme} from './theming';
 
 
 function getFractionOfWindow(
@@ -61,10 +61,11 @@ function Gate({
         padding: '3px',
         boxSizing: 'border-box',
         borderRight: '1px solid black',
+        borderRadius: '4px',
         userSelect: 'none',
         writingMode: 'vertical-lr',
         textAlign: 'center',
-        backgroundColor: theme.secondaryColor,
+        backgroundColor: theme.palette.secondary.main,
         color: '#FFFFFF',
     };
 
@@ -143,8 +144,7 @@ function Gate({
 
                     </div>
                 )}
-
-            </>
+        </>
     );
 }
 

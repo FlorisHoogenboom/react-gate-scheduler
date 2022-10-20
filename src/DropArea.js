@@ -1,8 +1,8 @@
 import React from 'react';
 import {useDrop} from 'react-dnd';
+import {useTheme} from '@mui/material/styles';
 
 import {DragTypes} from './Constants';
-import {useTheme} from './theming';
 
 
 function DropArea({
@@ -29,6 +29,7 @@ function DropArea({
         borderColor: theme.primaryColor,
         height: '100%',
         width: '100%',
+        boxSizing: 'border-box',
         textAlign: 'center',
         display: 'table',
     };
