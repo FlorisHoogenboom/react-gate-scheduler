@@ -25,7 +25,7 @@ function App() {
         () => StartTime,
     );
 
-    const [view, setView] = useState(() => 'watchlist');
+    const [view, setView] = useState(() => 'full');
 
     useEffect(() => {
         const interval = setInterval(() => {

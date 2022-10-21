@@ -4,6 +4,7 @@ import {useTheme} from '@mui/material/styles';
 
 import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
+import {Avatar} from "@mui/material";
 
 
 function getFractionOfWindow(
@@ -59,15 +60,7 @@ function Gate({
         float: 'left',
         display: 'block',
         height: '100%',
-        padding: '3px',
-        boxSizing: 'border-box',
-        borderRight: '1px solid black',
-        borderRadius: '4px',
-        userSelect: 'none',
-        writingMode: 'vertical-lr',
-        textAlign: 'center',
-        backgroundColor: theme.palette.secondary.main,
-        color: '#FFFFFF',
+        paddingLeft: '3px',
     };
 
     const timelineStyle = {
@@ -116,7 +109,7 @@ function Gate({
                             ...highlightRootStyle,
                         }}>
                         <div style={labelStyle}>
-                            {standName}
+                            <Avatar sx={{bgcolor: theme.palette.primary.light, width: '30px', height: '30px', fontSize: '15px', top: '50%', transform: 'translateY(-50%)'}}>{standName}</Avatar>
                         </div>
 
                         <div style={timelineStyle}>

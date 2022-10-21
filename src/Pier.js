@@ -1,6 +1,6 @@
 
 import {useTheme} from '@mui/material/styles';
-import {Card} from "@mui/material";
+import {Card, Divider, Stack} from "@mui/material";
 
 function Pier({
     name,
@@ -23,7 +23,11 @@ function Pier({
     return (
         <Card>
             <div style={pierHeaderStyle}>{name}</div>
-            {children}
+            <Stack
+                divider={<Divider flexItem />}
+                spacing={0}>
+                {children}
+            </Stack>
         </Card>
     );
 }
