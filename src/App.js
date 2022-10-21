@@ -17,7 +17,6 @@ import {
     StartTime,
 } from './Constants';
 import GateChart from './GateChart';
-import DropArea from './DropArea';
 import {theme} from './theming';
 
 
