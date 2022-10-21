@@ -1,11 +1,13 @@
 import _ from 'lodash';
 import {useTheme} from '@mui/material/styles';
 import {useState} from 'react';
+import {Stack} from '@mui/material';
 
 import Gate from './Gate';
 import gateConfig from './gateConfig.json';
 import baseTurnarounds from './turnarounds.json';
 import Turnaround from './Turnaround';
+import Pier from "./Pier";
 
 
 function toNestedStructure(gateConfig, tunrarounds) {
@@ -54,19 +56,8 @@ function GateChart({
         width: '100%',
     };
 
-    const pierHeaderStyle = {
-        width: '100%',
-        padding: '10px',
-        boxSizing: 'border-box',
-        fontWeight: 'bold',
-        fontSize: '20px',
-        verticalAlign: 'middle',
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-    };
-
     const gateContainerStyle = {
-        padding: '3px',
+        padding: '0px',
     };
 
     const gateStyle = {
@@ -84,10 +75,9 @@ function GateChart({
     };
 
     return (
-        <div style={{...rootStyle, ...style}} >
+        <Stack spacing={2}>
             {!!turnarounds && Object.entries(toNestedStructure(gateConfig, turnarounds)).map(([pierId, pier]) =>
-                <div key={pierId}>
-                    <div style={pierHeaderStyle}>{pier.name}</div>
+                <Pier key={pierId} name={pier.name}>
                     {Object.entries(pier.stands).map(([standId, stand], i)=>
                         <div
                             key={standId}
@@ -112,9 +102,9 @@ function GateChart({
                                 )}
                             </Gate>
                         </div>)}
-                </div>,
+                </Pier>
             )}
-        </div>
+        </Stack>
     );
 }
 

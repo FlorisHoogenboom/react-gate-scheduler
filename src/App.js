@@ -42,14 +42,11 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <DndProvider backend={HTML5Backend}>
-                <div hidden={view === 'watchlist'}>
-                    <Stack
-                        spacing={2}>
-                        <GateChart
-                            startTime={time}
-                            forwardWindowInSeconds={DefaultFowardWindowInSeconds}
-                            backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
-                    </Stack>
+                <div hidden={view === 'watchlist'} style={{padding: "5px"}}>
+                    <GateChart
+                        startTime={time}
+                        forwardWindowInSeconds={DefaultFowardWindowInSeconds}
+                        backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
                 </div>
 
 
