@@ -32,10 +32,10 @@ function App() {
         const interval = setInterval(() => {
             setTime((current) => {
                 const result = new Date(current);
-                result.setSeconds(result.getSeconds() + 60);
+                result.setSeconds(result.getSeconds() + 18);
                 return result;
             });
-        }, 1000);
+        }, 100);
 
         return () => clearInterval(interval);
     }, []);
@@ -46,12 +46,6 @@ function App() {
                 <div hidden={view === 'watchlist'}>
                     <Stack
                         spacing={2}>
-                        <Card elevation={3}>
-                            <div style={{height: '100px', padding: '20px 20px 20px 20px', boxSizing: 'border-box'}}>
-                                <DropArea
-                                    text="Add to watchlist"></DropArea>
-                            </div>
-                        </Card>
                         <GateChart
                             startTime={time}
                             forwardWindowInSeconds={DefaultFowardWindowInSeconds}
@@ -73,6 +67,7 @@ function App() {
                             value="watchlist"
                             label="Watchlist"
                             icon={<NotificationsActiveIcon />}/>
+
                     </BottomNavigation>
                 </AppBar>
             </DndProvider>

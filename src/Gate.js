@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import {useTheme} from '@mui/material/styles';
 
@@ -97,7 +98,7 @@ function Gate({
 
     if (canDrop && isOver) {
         highlightRootStyle = {
-            backgroundColor: theme.highlightColor,
+            backgroundColor: theme.palette.warning.light,
         };
     }
 
@@ -121,8 +122,8 @@ function Gate({
                         <div style={timelineStyle}>
                             <div style={innerTimelineStyle}>
                                 {!!children && children.map((child) => {
-                                    const sibt = child.props.inboundFlight.sbt;
-                                    const sobt = child.props.outboundFlight.sbt;
+                                    const sibt = new Date(child.props.inboundFlight.sbt);
+                                    const sobt = new Date(child.props.outboundFlight.sbt);
                                     const startFraction = getFractionOfWindow(
                                         startTime, backwardWindowInSeconds, forwardWindowInSeconds, sibt,
                                     );
@@ -132,15 +133,20 @@ function Gate({
                                     const left = (startFraction * 100).toFixed(2) + '%';
                                     const right = (100 - endFraction * 100).toFixed(2) + '%';
 
+                                    const fractionDone = _.clamp(
+                                        getFractionOfWindow(sibt, 0, (sobt - sibt)/1000, startTime),
+                                        0,
+                                        1,
+                                    );
+
                                     return React.cloneElement(
                                         child,
-                                        {sibtMargin: left, sobtMargin: right},
+                                        {sibtMargin: left, sobtMargin: right, fractionDone: fractionDone},
                                     );
                                 })}
+                                <div style={currentTimeBarStyle}></div>
                             </div>
                         </div>
-
-                        <div style={currentTimeBarStyle}></div>
 
                     </div>
                 )}

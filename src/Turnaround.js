@@ -4,7 +4,15 @@ import {DragTypes} from './Constants';
 import {useTheme} from '@mui/material/styles';
 
 
-function Turnaround({style, turnaroundId, inboundFlight, outboundFlight, sibtMargin, sobtMargin, ...props}) {
+function Turnaround({
+    turnaroundId,
+    inboundFlight,
+    outboundFlight,
+    sibtMargin,
+    sobtMargin,
+    fractionDone,
+    ...props
+}) {
     const theme = useTheme();
 
     const rootStyle = {
@@ -14,7 +22,8 @@ function Turnaround({style, turnaroundId, inboundFlight, outboundFlight, sibtMar
         borderRadius: '25px',
         transform: 'translate(0, 0)', // Needed for proper rendering
         fontSize: '12px',
-        backgroundColor: theme.palette.primary.light,
+        background: theme.palette.secondary.light,
+        color: theme.palette.secondary.contrastText,
     };
 
     const [{isDragging}, drag] = useDrag(() => ({
@@ -22,6 +31,7 @@ function Turnaround({style, turnaroundId, inboundFlight, outboundFlight, sibtMar
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
+        canDrag: () => fractionDone === 0,
         item: {turnaroundId},
     }));
 
@@ -45,12 +55,21 @@ function Turnaround({style, turnaroundId, inboundFlight, outboundFlight, sibtMar
         };
     }
 
+    if (fractionDone) {
+        const percentageDone = (fractionDone * 100).toFixed(5) + '%'
+        computedStyle = {
+            ...computedStyle,
+            background: `linear-gradient(90deg, ${theme.palette.secondary.main} ${percentageDone}, ${theme.palette.secondary.light} ${percentageDone})`,
+        };
+    }
+
+
+
     return (
         <div
             ref={drag}
             style={{
                 ...computedStyle,
-                ...style,
                 ...{opacity: isDragging ? 0.5 : 1},
             }}>
             {inboundFlight.flightDesignator}/{outboundFlight.flightDesignator}
