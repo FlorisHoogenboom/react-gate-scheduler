@@ -7,7 +7,7 @@ import Gate from './Gate';
 import gateConfig from './gateConfig.json';
 import baseTurnarounds from './turnarounds.json';
 import Turnaround from './Turnaround';
-import Pier from "./Pier";
+import Pier from './Pier';
 
 
 function toNestedStructure(gateConfig, tunrarounds) {
@@ -50,58 +50,31 @@ function GateChart({
         });
     };
 
-    const theme = useTheme();
-
-    const rootStyle = {
-        width: '100%',
-    };
-
-    const gateContainerStyle = {
-        padding: '0px',
-    };
-
-    const gateStyle = {
-        position: 'relative',
-    };
-
-    const evenGateStyleEven = {
-        ...gateStyle,
-        backgroundColor: '#FFFFFF',
-    };
-
-    const eventGateStyleOdd = {
-        ...gateStyle,
-        backgroundColor: '#EEEEEE',
-    };
-
     return (
         <Stack spacing={2}>
             {!!turnarounds && Object.entries(toNestedStructure(gateConfig, turnarounds)).map(([pierId, pier]) =>
                 <Pier key={pierId} name={pier.name}>
                     {Object.entries(pier.stands).map(([standId, stand], i)=>
-                        <div
+                        <Gate
                             key={standId}
-                            style={gateContainerStyle}>
-                            <Gate
-                                startTime={startTime}
-                                backwardWindowInSeconds={backwardWindowInSeconds}
-                                forwardWindowInSeconds={forwardWindowInSeconds}
-                                pierId={pierId}
-                                standId={standId}
-                                standName={stand.name}
-                                dropTurnaroundHandler={assignTurnaroundToStand}
-                                hideWhenEmpty={hideEmpty} // TODO: this stil has bugs for non visible ta's
-                                >
-                                {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=>
-                                    <Turnaround
-                                        key={turnaround.turnaroundId}
-                                        turnaroundId={turnaround.turnaroundId}
-                                        inboundFlight={turnaround.inboundFlight}
-                                        outboundFlight={turnaround.outboundFlight}></Turnaround>,
-                                )}
-                            </Gate>
-                        </div>)}
-                </Pier>
+                            startTime={startTime}
+                            backwardWindowInSeconds={backwardWindowInSeconds}
+                            forwardWindowInSeconds={forwardWindowInSeconds}
+                            pierId={pierId}
+                            standId={standId}
+                            standName={stand.name}
+                            dropTurnaroundHandler={assignTurnaroundToStand}
+                            hideWhenEmpty={hideEmpty} // TODO: this stil has bugs for non visible ta's
+                        >
+                            {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=>
+                                <Turnaround
+                                    key={turnaround.turnaroundId}
+                                    turnaroundId={turnaround.turnaroundId}
+                                    inboundFlight={turnaround.inboundFlight}
+                                    outboundFlight={turnaround.outboundFlight}></Turnaround>,
+                            )}
+                        </Gate>)}
+                </Pier>,
             )}
         </Stack>
     );

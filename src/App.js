@@ -5,8 +5,7 @@ import {ThemeProvider} from '@mui/material/styles';
 import {
     AppBar,
     BottomNavigation,
-    BottomNavigationAction, Card,
-    Stack,
+    BottomNavigationAction
 } from '@mui/material';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
@@ -42,7 +41,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <DndProvider backend={HTML5Backend}>
-                <div hidden={view === 'watchlist'} style={{padding: "5px"}}>
+                <div hidden={view === 'watchlist'} style={{padding: '5px'}}>
                     <GateChart
                         startTime={time}
                         forwardWindowInSeconds={DefaultFowardWindowInSeconds}

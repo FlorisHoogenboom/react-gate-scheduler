@@ -31,9 +31,11 @@ function Turnaround({
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
-        canDrag: () => fractionDone === 0,
+        canDrag: (monitor) => {
+            return fractionDone === 0;
+        },
         item: {turnaroundId},
-    }));
+    }), [fractionDone]);
 
     let computedStyle;
 
@@ -56,13 +58,12 @@ function Turnaround({
     }
 
     if (fractionDone) {
-        const percentageDone = (fractionDone * 100).toFixed(5) + '%'
+        const percentageDone = (fractionDone * 100).toFixed(5) + '%';
         computedStyle = {
             ...computedStyle,
             background: `linear-gradient(90deg, ${theme.palette.secondary.main} ${percentageDone}, ${theme.palette.secondary.light} ${percentageDone})`,
         };
     }
-
 
 
     return (
