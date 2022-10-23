@@ -61,7 +61,7 @@ function Turnaround({
         const percentageDone = (fractionDone * 100).toFixed(5) + '%';
         computedStyle = {
             ...computedStyle,
-            background: `linear-gradient(90deg, ${theme.palette.secondary.main} ${percentageDone}, ${theme.palette.secondary.light} ${percentageDone})`,
+            background: `linear-gradient(90deg, ${theme.palette.secondary.main} ${percentageDone}, ${theme.palette.secondary.light} ${percentageDone})`, // eslint-disable-line max-len
         };
     }
 

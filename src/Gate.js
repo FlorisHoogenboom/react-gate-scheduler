@@ -69,8 +69,8 @@ function Gate({
         height: '30px',
         fontSize: '15px',
         top: '50%',
-        transform: 'translateY(-50%)'
-    }
+        transform: 'translateY(-50%)',
+    };
 
     const timelineStyle = {
         height: '100%',

@@ -5,7 +5,7 @@ import {ThemeProvider} from '@mui/material/styles';
 import {
     AppBar,
     BottomNavigation,
-    BottomNavigationAction
+    BottomNavigationAction,
 } from '@mui/material';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
