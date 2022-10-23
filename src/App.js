@@ -18,6 +18,29 @@ import {
 import GateChart from './GateChart';
 import {theme} from './theming';
 
+import gateConfig from './gateConfig.json';
+import baseTurnarounds from './turnarounds.json';
+import _ from 'lodash';
+
+
+function toNestedStructure(gateConfig, tunrarounds) {
+    const result = _.cloneDeep(gateConfig);
+
+    for (const [turnaroundId, turnaround] of Object.entries(tunrarounds)) {
+        const pier = turnaround['pier'];
+        const stand = turnaround['stand'];
+
+        if (!!!result[pier]['stands'][stand]['turnarounds']) {
+            result[pier]['stands'][stand]['turnarounds'] = [];
+        }
+        result[pier]['stands'][stand]['turnarounds'].push({
+            ...turnaround,
+            turnaroundId,
+        });
+    }
+
+    return result;
+}
 
 function App() {
     const [time, setTime] = useState(
@@ -38,14 +61,29 @@ function App() {
         return () => clearInterval(interval);
     }, []);
 
+    const [turnarounds, setTurnarounds] = useState(baseTurnarounds);
+
+    const assignTurnaroundToStand = (turnaroundId, pierId, standId) => {
+        setTurnarounds((prevState) => {
+            const result = _.cloneDeep(prevState);
+            result[turnaroundId]['pier'] = pierId;
+            result[turnaroundId]['stand'] = standId;
+
+            return result;
+        });
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <DndProvider backend={HTML5Backend}>
                 <div hidden={view === 'watchlist'} style={{padding: '5px'}}>
                     <GateChart
+                        data={toNestedStructure(gateConfig, turnarounds)}
                         startTime={time}
                         forwardWindowInSeconds={DefaultFowardWindowInSeconds}
-                        backwardWindowInSeconds={DefaultBackwardWindowInSeconds}></GateChart>
+                        backwardWindowInSeconds={DefaultBackwardWindowInSeconds}
+                        assignTurnaroundToStand={assignTurnaroundToStand}
+                        hideEmpty={false}></GateChart>
                 </div>
 
 
