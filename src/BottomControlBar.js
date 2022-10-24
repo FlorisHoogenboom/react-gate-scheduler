@@ -1,16 +1,21 @@
-import {AppBar, BottomNavigation, BottomNavigationAction} from '@mui/material';
+import {AppBar, Badge, BottomNavigation, BottomNavigationAction, Box, IconButton} from '@mui/material';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import {useEffect, useRef} from "react";
-import {useDrop} from "react-dnd";
-import {DragTypes} from "./Constants";
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import {useEffect, useRef} from 'react';
+import {useDrop} from 'react-dnd';
+import {DragTypes} from './Constants';
+import {useTheme} from '@mui/material/styles';
 
 export function BottomControlBar({
     onViewChange,
     addTurnaroundToWatchlist,
     view,
+    numberOfUnsavedChanges,
+    numberOnWatchlist,
     ...props
 }){
+    const theme = useTheme();
 
     const rippleRef = useRef();
 
@@ -33,23 +38,52 @@ export function BottomControlBar({
         }
     }, [isOver]);
 
-    return <AppBar position="fixed" color="primary" sx={{top: 'auto', bottom: 0}}>
-        <BottomNavigation
-            onChange={onViewChange}
-            value={view}
-            showLabels>
-            <BottomNavigationAction
-                value="full"
-                label="Full view"
-                icon={<AlignHorizontalLeftIcon/>}/>
-            <BottomNavigationAction
-                ref={dropRef}
-                value="watchlist"
-                label="Watchlist"
-                icon={<NotificationsActiveIcon/>}
-                touchRippleRef={rippleRef}/>
-        </BottomNavigation>
-    </AppBar>;
+    return (
+        <AppBar
+            position="fixed"
+            color="primary"
+            sx={{top: 'auto', bottom: 0}}>
+            <BottomNavigation
+                onChange={onViewChange}
+                value={view}
+                showLabels
+                sx={{flexGrow: 1}}
+            >
+                <BottomNavigationAction
+                    value="full"
+                    label="Full view"
+                    icon={<AlignHorizontalLeftIcon/>}/>
+                <BottomNavigationAction
+                    ref={dropRef}
+                    value="watchlist"
+                    label="Watchlist"
+                    icon={
+                        <Badge badgeContent={numberOnWatchlist} color="secondary">
+                            <NotificationsActiveIcon/>
+                        </Badge>
+                    }
+                    touchRippleRef={rippleRef}/>
+            </BottomNavigation>
+
+            <Box
+                sx={{
+                    display: 'block',
+                    position: 'absolute',
+                    right: '15px',
+                    top: '50%',
+                    transform: 'translateY(-50%)'}}>
+                <IconButton
+                    size="large"
+                    aria-label="show 17 new notifications"
+                    disabled={!!!numberOfUnsavedChanges || numberOfUnsavedChanges === 0}>
+                    <Badge badgeContent={numberOfUnsavedChanges} color="secondary">
+                        <PublishedWithChangesIcon/>
+                    </Badge>
+                </IconButton>
+
+            </Box>
+        </AppBar>
+    );
 }
 
 export default BottomControlBar;

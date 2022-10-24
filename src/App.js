@@ -1,14 +1,11 @@
-import {useEffect, useRef, useState} from 'react';
-import {useDrop} from 'react-dnd';
+import {useEffect, useState} from 'react';
+import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, StartTime,} from './Constants';
+import _ from 'lodash';
 
-import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, DragTypes, StartTime,} from './Constants';
 import GateChart from './GateChart';
-
 import gateConfig from './gateConfig.json';
 import baseTurnarounds from './turnarounds.json';
-import _ from 'lodash';
-import * as PropTypes from "prop-types";
-import {BottomControlBar} from "./BottomControlBar";
+import {BottomControlBar} from './BottomControlBar';
 
 
 function toNestedStructure(gateConfig, tunrarounds) {
@@ -29,13 +26,6 @@ function toNestedStructure(gateConfig, tunrarounds) {
 
     return result;
 }
-
-BottomControlBar.propTypes = {
-    onChange: PropTypes.func,
-    value: PropTypes.string,
-    ref: PropTypes.func,
-    touchRippleRef: PropTypes.any
-};
 
 function App() {
     const [time, setTime] = useState(
@@ -104,7 +94,8 @@ function App() {
             <BottomControlBar
                 onViewChange={(event, value) => setView(value)}
                 view={view}
-                addTurnaroundToWatchlist={addTurnaroundToWatchlist}/>
+                addTurnaroundToWatchlist={addTurnaroundToWatchlist}
+                numberOnWatchlist={watchlistTurnaroundIds.length}/>
         </>
     );
 }
