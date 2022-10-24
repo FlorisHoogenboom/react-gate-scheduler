@@ -5,7 +5,6 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import {useEffect, useRef} from 'react';
 import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
-import {useTheme} from '@mui/material/styles';
 
 export function BottomControlBar({
     onViewChange,
@@ -14,9 +13,7 @@ export function BottomControlBar({
     modifiedTurnarounds,
     numberOnWatchlist,
     ...props
-}){
-    const theme = useTheme();
-
+}) {
     const rippleRef = useRef();
 
     const [{isOver}, dropRef] = useDrop(() => ({

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, StartTime,} from './Constants';
+import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, StartTime} from './Constants';
 import _ from 'lodash';
 
 import GateChart from './GateChart';
@@ -56,7 +56,7 @@ function App() {
                 // this flight has moved
                 result[turnaroundId].previous = {
                     pier: result[turnaroundId].pier,
-                    stand: result[turnaroundId].stand
+                    stand: result[turnaroundId].stand,
                 };
             }
 
