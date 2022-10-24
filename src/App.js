@@ -1,6 +1,5 @@
 import {useRef, useEffect, useState} from 'react';
 import {useDrop} from 'react-dnd';
-import {ThemeProvider} from '@mui/material/styles';
 import {
     AppBar,
     BottomNavigation,
@@ -108,7 +107,7 @@ function App() {
     };
 
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <div hidden={view !== 'full'} style={{padding: '5px'}}>
                 <GateChart
                     data={toNestedStructure(gateConfig, turnarounds)}
@@ -147,7 +146,7 @@ function App() {
 
                 </BottomNavigation>
             </AppBar>
-        </ThemeProvider>
+        </>
     );
 }
 
