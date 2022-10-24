@@ -11,7 +11,7 @@ export function BottomControlBar({
     onViewChange,
     addTurnaroundToWatchlist,
     view,
-    numberOfUnsavedChanges,
+    modifiedTurnarounds,
     numberOnWatchlist,
     ...props
 }){
@@ -37,6 +37,8 @@ export function BottomControlBar({
             rippleRef.current && rippleRef.current.stop();
         }
     }, [isOver]);
+
+    const numberOfUnsavedChanges = Object.keys(modifiedTurnarounds).length;
 
     return (
         <AppBar
