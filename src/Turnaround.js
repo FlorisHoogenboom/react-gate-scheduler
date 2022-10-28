@@ -34,7 +34,11 @@ function Turnaround({
         canDrag: (monitor) => {
             return fractionDone === 0;
         },
-        item: {turnaroundId},
+        item: {
+            turnaroundId: turnaroundId,
+            ibt: new Date(inboundFlight.sbt),
+            obt: new Date(outboundFlight.sbt),
+        },
     }), [fractionDone]);
 
     let computedStyle;

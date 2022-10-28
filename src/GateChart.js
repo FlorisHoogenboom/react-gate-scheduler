@@ -60,6 +60,8 @@ function GateChart({
                                     key={turnaround.turnaroundId}
                                     turnaroundId={turnaround.turnaroundId}
                                     inboundFlight={turnaround.inboundFlight}
+                                    ibt={new Date(turnaround.inboundFlight.sbt)}
+                                    obt={new Date(turnaround.outboundFlight.sbt)}
                                     outboundFlight={turnaround.outboundFlight}></Turnaround>,
                             )}
                         </Gate>)}

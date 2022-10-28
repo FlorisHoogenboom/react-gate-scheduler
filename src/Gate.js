@@ -34,17 +34,32 @@ function Gate({
 }) {
     const theme = useTheme();
 
+    const doesOverlap = (ibt, obt) => {
+        if (!Array.isArray(children)) {
+            return false;
+        }
+
+        return !children.every((turnaround) => {
+            if (turnaround.props.ibt >= obt) {
+                return true;
+            } else {
+                return turnaround.props.obt <= ibt;
+            };
+        });
+    };
+
     const [{canDrop, isOver}, dropRef] = useDrop(() => ({
         accept: DragTypes.FLIGHT,
         drop: (item, monitor) => {
             dropTurnaroundHandler(item.turnaroundId, pierId, standId);
         },
+        canDrop: (item, monitor) => !doesOverlap(item.ibt, item.obt),
         collect: (monitor) => ({
             canDrop: !!monitor.canDrop(),
             isOver: !!monitor.isOver(),
         }),
 
-    }));
+    }), [children]);
 
     const rootStyle = {
         width: '100%',
@@ -124,8 +139,8 @@ function Gate({
                         <div style={timelineStyle}>
                             <div style={innerTimelineStyle}>
                                 {!!children && children.map((child) => {
-                                    const sibt = new Date(child.props.inboundFlight.sbt);
-                                    const sobt = new Date(child.props.outboundFlight.sbt);
+                                    const sibt = child.props.ibt;
+                                    const sobt = child.props.obt;
                                     const startFraction = getFractionOfWindow(
                                         startTime, backwardWindowInSeconds, forwardWindowInSeconds, sibt,
                                     );
