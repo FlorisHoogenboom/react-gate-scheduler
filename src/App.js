@@ -8,25 +8,6 @@ import baseTurnarounds from './turnarounds.json';
 import {BottomControlBar} from './BottomControlBar';
 
 
-function toNestedStructure(gateConfig, tunrarounds) {
-    const result = _.cloneDeep(gateConfig);
-
-    for (const [turnaroundId, turnaround] of Object.entries(tunrarounds)) {
-        const pier = turnaround['pier'];
-        const stand = turnaround['stand'];
-
-        if (!!!result[pier]['stands'][stand]['turnarounds']) {
-            result[pier]['stands'][stand]['turnarounds'] = [];
-        }
-        result[pier]['stands'][stand]['turnarounds'].push({
-            ...turnaround,
-            turnaroundId,
-        });
-    }
-
-    return result;
-}
-
 function App() {
     const [time, setTime] = useState(
         () => StartTime,
@@ -96,7 +77,8 @@ function App() {
         <>
             <div hidden={view !== 'full'} style={{padding: '5px'}}>
                 <GateChart
-                    data={toNestedStructure(gateConfig, turnarounds)}
+                    gateConfig={gateConfig}
+                    turnarounds={turnarounds}
                     startTime={time}
                     forwardWindowInSeconds={DefaultFowardWindowInSeconds}
                     backwardWindowInSeconds={DefaultBackwardWindowInSeconds}
@@ -105,7 +87,8 @@ function App() {
             </div>
             <div hidden={view !== 'watchlist'} style={{padding: '5px'}}>
                 <GateChart
-                    data={toNestedStructure(gateConfig, _.pick(turnarounds, watchlistTurnaroundIds))}
+                    turnarounds={_.pick(turnarounds, watchlistTurnaroundIds)}
+                    gateConfig={gateConfig}
                     startTime={time}
                     forwardWindowInSeconds={DefaultFowardWindowInSeconds}
                     backwardWindowInSeconds={DefaultBackwardWindowInSeconds}
