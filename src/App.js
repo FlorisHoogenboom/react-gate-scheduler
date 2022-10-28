@@ -116,6 +116,7 @@ function App() {
             <BottomControlBar
                 onViewChange={(event, value) => setView(value)}
                 view={view}
+                gateConfig={gateConfig}
                 modifiedTurnarounds={filterModifiedTurnarounds(turnarounds)}
                 addTurnaroundToWatchlist={addTurnaroundToWatchlist}
                 numberOnWatchlist={watchlistTurnaroundIds.length}/>
