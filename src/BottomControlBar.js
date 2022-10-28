@@ -4,9 +4,10 @@ import {
     BottomNavigation,
     BottomNavigationAction,
     Box,
-    Card, Chip, Divider,
-    IconButton, Stack,
-    Typography
+    Chip,
+    Divider,
+    IconButton,
+    Stack,
 } from '@mui/material';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -14,7 +15,6 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import {useEffect, useRef, useState} from 'react';
 import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 
 export function BottomControlBar({
     onViewChange,
@@ -91,7 +91,7 @@ export function BottomControlBar({
                         position: 'absolute',
                         right: '10px',
                         top: '-10px',
-                        transform: 'translateY(-100%)'
+                        transform: 'translateY(-100%)',
                     }}>
                     <Stack
                         divider={<Divider flexItem />}
