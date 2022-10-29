@@ -94,6 +94,7 @@ function Gate({
         paddingBottom: '10px',
         boxSizing: 'border-box',
         position: 'relative',
+        isolation: 'isolate',
     };
 
     const innerTimelineStyle = {

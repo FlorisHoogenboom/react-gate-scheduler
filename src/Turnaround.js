@@ -24,6 +24,7 @@ function Turnaround({
         fontSize: '12px',
         background: theme.palette.secondary.light,
         color: theme.palette.secondary.contrastText,
+        mixBlendMode: 'color-burn',
     };
 
     const [{isDragging}, drag] = useDrag(() => ({
