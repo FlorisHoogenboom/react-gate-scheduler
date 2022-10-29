@@ -20,3 +20,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@property --animationEndColor {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #DDDDDD;
+}
+
+@property --animationStartColor {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #FFFFFF;
+}
+
+@property --animatedColor {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #FFFFFF;
+}
+
+@keyframes color {
+  0% {
+    --animatedColor: var(--animationStartColor);
+  }
+  50% {
+    --animatedColor: var(--animationEndColor);
+  }
+  100 {
+  --animatedColor: var(--animationStartColor);
+  }
+}

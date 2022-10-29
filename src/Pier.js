@@ -32,7 +32,7 @@ function Pier({
                     <Card>
                         <div style={pierHeaderStyle}>{name}</div>
                         <Stack
-                            divider={<Divider flexItem />}
+                            divider={<Divider variant="middle" flexItem />}
                             spacing={0}>
                             {children}
                         </Stack>

@@ -106,7 +106,7 @@ function Gate({
     const currentTimeBarStyle = {
         height: '100%',
         position: 'absolute',
-        borderLeft: '2px dashed #000000',
+        borderLeft: '2px dashed #CCCCCC',
         left: (
             getFractionOfWindow(startTime, backwardWindowInSeconds, forwardWindowInSeconds, startTime) * 100
         ).toFixed(2) + '%',
@@ -117,6 +117,15 @@ function Gate({
         highlightRootStyle = {
             backgroundColor: theme.palette.warning.light,
         };
+    } else if (canDrop && !isOver) {
+        highlightRootStyle = {
+            animationName: "color",
+            animationDuration: "2s",
+            animationIterationCount: "infinite",
+            "--animationStartColor": "#FFFFFF",
+            "--animationEndColor": theme.palette.grey.light,
+            background: "linear-gradient(90deg, var(--animatedColor), #FFFFFF)",
+        }
     }
 
     return (
