@@ -12,6 +12,7 @@ import {
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import {useEffect, useRef, useState} from 'react';
 import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
@@ -101,11 +102,13 @@ export function BottomControlBar({
                                 <Stack
                                     key={k}
                                     direction="row"
+                                    alignItems="center"
                                     spacing={1}>
                                     <Chip
                                         variant="outlined"
                                         avatar={<Avatar>{gateConfig[v.previous.pier]['name']}</Avatar>}
                                         label={gateConfig[v.previous.pier]['stands'][v.previous.stand]['name']} />
+                                    <DoubleArrowIcon color="primary"></DoubleArrowIcon>
                                     <Chip
                                         color="secondary"
                                         avatar={<Avatar>{gateConfig[v.pier]['name']}</Avatar>}
