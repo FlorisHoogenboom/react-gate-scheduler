@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material';
+import {Stack, Typography} from '@mui/material';
 
 import Gate from './Gate';
 import Turnaround from './Turnaround';
@@ -38,6 +38,8 @@ function GateChart({
 
     return (
         <Stack spacing={2}>
+            {(_.size(turnarounds) === 0) && <Typography>No turnarounds to display</Typography>}
+
             {Object.entries(mapTurnaroundToGates(gateConfig, turnarounds)).map(([pierId, pier]) =>
                 <Pier
                     key={pierId}
