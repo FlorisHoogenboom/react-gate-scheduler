@@ -119,13 +119,13 @@ function Gate({
         };
     } else if (canDrop && !isOver) {
         highlightRootStyle = {
-            animationName: "color",
-            animationDuration: "2s",
-            animationIterationCount: "infinite",
-            "--animationStartColor": "#FFFFFF",
-            "--animationEndColor": theme.palette.grey.light,
-            background: "linear-gradient(90deg, var(--animatedColor), #FFFFFF)",
-        }
+            'animationName': 'color',
+            'animationDuration': '2s',
+            'animationIterationCount': 'infinite',
+            '--animationStartColor': '#FFFFFF',
+            '--animationEndColor': theme.palette.grey.light,
+            'background': 'linear-gradient(90deg, var(--animatedColor), #FFFFFF)',
+        };
     }
 
     return (
