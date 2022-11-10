@@ -18,6 +18,7 @@ function App() {
     const [watchlistTurnaroundIds, setWatchlistTurnaroundIds] = useState([]);
 
     useEffect(() => {
+        // Effect to let the time iterate, now mocked for testing purposes.
         const interval = setInterval(() => {
             setTime((current) => {
                 const result = new Date(current);
