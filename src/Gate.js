@@ -11,8 +11,6 @@ function getFractionOfWindow(
     currentTime, startTime,
     endTime, timestamp,
 ) {
-    console.log(startTime);
-    console.log(endTime);
     const totalWindowInMs = endTime - startTime;
 
     return (timestamp - currentTime) / totalWindowInMs;
