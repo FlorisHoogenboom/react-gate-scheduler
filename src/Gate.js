@@ -8,12 +8,13 @@ import {Avatar} from '@mui/material';
 
 
 function getFractionOfWindow(
-    currentTime, startTime,
-    endTime, timestamp,
+    startTime,
+    endTime,
+    timestamp,
 ) {
     const totalWindowInMs = endTime - startTime;
 
-    return (timestamp - currentTime) / totalWindowInMs;
+    return (timestamp - startTime) / totalWindowInMs;
 }
 
 function Gate({
@@ -106,7 +107,7 @@ function Gate({
         position: 'absolute',
         borderLeft: '2px dashed #CCCCCC',
         left: (
-            getFractionOfWindow(currentTime, startTime, endTime, currentTime) * 100
+            getFractionOfWindow(startTime, endTime, currentTime) * 100
         ).toFixed(2) + '%',
     };
 
@@ -149,16 +150,16 @@ function Gate({
                                     const sibt = child.props.ibt;
                                     const sobt = child.props.obt;
                                     const startFraction = getFractionOfWindow(
-                                        currentTime, startTime, endTime, sibt,
+                                        startTime, endTime, sibt,
                                     );
                                     const endFraction = getFractionOfWindow(
-                                        currentTime, startTime, endTime, sobt,
+                                        startTime, endTime, sobt,
                                     );
                                     const left = (startFraction * 100).toFixed(2) + '%';
                                     const right = (100 - endFraction * 100).toFixed(2) + '%';
 
                                     const fractionDone = _.clamp(
-                                        getFractionOfWindow(sibt, 0, (sobt - sibt)/1000, currentTime),
+                                        getFractionOfWindow(sibt, sobt, currentTime),
                                         0,
                                         1,
                                     );
