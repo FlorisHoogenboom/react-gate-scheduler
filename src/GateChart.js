@@ -8,9 +8,9 @@ import _ from 'lodash';
 
 function GateChart({
     style,
+    currentTime,
     startTime,
-    backwardWindowInSeconds,
-    forwardWindowInSeconds,
+    endTime,
     gateConfig,
     turnarounds,
     assignTurnaroundToStand,
@@ -48,24 +48,28 @@ function GateChart({
                     {Object.entries(pier.stands).map(([standId, stand], i)=>
                         <Gate
                             key={standId}
+                            currentTime={currentTime}
                             startTime={startTime}
-                            backwardWindowInSeconds={backwardWindowInSeconds}
-                            forwardWindowInSeconds={forwardWindowInSeconds}
+                            endTime={endTime}
                             pierId={pierId}
                             standId={standId}
                             standName={stand.name}
                             dropTurnaroundHandler={assignTurnaroundToStand}
                             hideWhenEmpty={hideEmpty} // TODO: this still has bugs for non visible ta's
                         >
-                            {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=>
-                                <Turnaround
-                                    key={turnaround.turnaroundId}
-                                    turnaroundId={turnaround.turnaroundId}
-                                    inboundFlight={turnaround.inboundFlight}
-                                    ibt={new Date(turnaround.inboundFlight.sbt)}
-                                    obt={new Date(turnaround.outboundFlight.sbt)}
-                                    outboundFlight={turnaround.outboundFlight}></Turnaround>,
-                            )}
+                            {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=> {
+                                const ibt = new Date(turnaround.inboundFlight.sbt);
+                                const obt = new Date(turnaround.outboundFlight.sbt);
+                                return (
+                                    <Turnaround
+                                        key={turnaround.turnaroundId}
+                                        turnaroundId={turnaround.turnaroundId}
+                                        inboundFlight={turnaround.inboundFlight}
+                                        ibt={ibt}
+                                        obt={obt}
+                                        outboundFlight={turnaround.outboundFlight}></Turnaround>
+                                );
+                            })}
                         </Gate>)}
                 </Pier>,
             )}

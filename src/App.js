@@ -74,15 +74,21 @@ function App() {
         return _.pickBy(turnarounds, (val) => !!val.previous);
     };
 
+    const visualizationStartTime = new Date(time);
+    visualizationStartTime.setSeconds(visualizationStartTime.getSeconds() - DefaultBackwardWindowInSeconds);
+
+    const visualizationEndTime = new Date(time);
+    visualizationEndTime.setSeconds(visualizationEndTime.getSeconds() + DefaultFowardWindowInSeconds);
+
     return (
         <>
             <div hidden={view !== 'full'} style={{padding: '5px'}}>
                 <GateChart
                     gateConfig={gateConfig}
                     turnarounds={turnarounds}
-                    startTime={time}
-                    forwardWindowInSeconds={DefaultFowardWindowInSeconds}
-                    backwardWindowInSeconds={DefaultBackwardWindowInSeconds}
+                    currentTime={time}
+                    startTime={visualizationStartTime}
+                    endTime={visualizationEndTime}
                     assignTurnaroundToStand={assignTurnaroundToStand}
                     hideEmpty={false}></GateChart>
             </div>
@@ -90,9 +96,9 @@ function App() {
                 <GateChart
                     turnarounds={_.pick(turnarounds, watchlistTurnaroundIds)}
                     gateConfig={gateConfig}
-                    startTime={time}
-                    forwardWindowInSeconds={DefaultFowardWindowInSeconds}
-                    backwardWindowInSeconds={DefaultBackwardWindowInSeconds}
+                    currentTime={time}
+                    startTime={visualizationStartTime}
+                    endTime={visualizationEndTime}
                     assignTurnaroundToStand={assignTurnaroundToStand}
                     hideEmpty={true}></GateChart>
             </div>

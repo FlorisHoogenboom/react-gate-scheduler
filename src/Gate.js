@@ -8,21 +8,20 @@ import {Avatar} from '@mui/material';
 
 
 function getFractionOfWindow(
-    startTime, backwardWindowInSeconds,
-    forwardWindowInSeconds, timestamp,
+    currentTime, startTime,
+    endTime, timestamp,
 ) {
-    const totalWindowInMs = (backwardWindowInSeconds + forwardWindowInSeconds) * 1000;
-    timestamp = new Date(timestamp);
-    startTime = new Date(startTime);
-    startTime.setSeconds(startTime.getSeconds() - backwardWindowInSeconds);
+    console.log(startTime);
+    console.log(endTime);
+    const totalWindowInMs = endTime - startTime;
 
-    return (timestamp - startTime) / totalWindowInMs;
+    return (timestamp - currentTime) / totalWindowInMs;
 }
 
 function Gate({
+    currentTime,
     startTime,
-    backwardWindowInSeconds,
-    forwardWindowInSeconds,
+    endTime,
     pierId,
     standId,
     standName,
@@ -109,7 +108,7 @@ function Gate({
         position: 'absolute',
         borderLeft: '2px dashed #CCCCCC',
         left: (
-            getFractionOfWindow(startTime, backwardWindowInSeconds, forwardWindowInSeconds, startTime) * 100
+            getFractionOfWindow(currentTime, startTime, endTime, currentTime) * 100
         ).toFixed(2) + '%',
     };
 
@@ -152,16 +151,16 @@ function Gate({
                                     const sibt = child.props.ibt;
                                     const sobt = child.props.obt;
                                     const startFraction = getFractionOfWindow(
-                                        startTime, backwardWindowInSeconds, forwardWindowInSeconds, sibt,
+                                        currentTime, startTime, endTime, sibt,
                                     );
                                     const endFraction = getFractionOfWindow(
-                                        startTime, backwardWindowInSeconds, forwardWindowInSeconds, sobt,
+                                        currentTime, startTime, endTime, sobt,
                                     );
                                     const left = (startFraction * 100).toFixed(2) + '%';
                                     const right = (100 - endFraction * 100).toFixed(2) + '%';
 
                                     const fractionDone = _.clamp(
-                                        getFractionOfWindow(sibt, 0, (sobt - sibt)/1000, startTime),
+                                        getFractionOfWindow(sibt, 0, (sobt - sibt)/1000, currentTime),
                                         0,
                                         1,
                                     );
