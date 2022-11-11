@@ -14,6 +14,8 @@ function App() {
     );
     const [view, setView] = useState(() => 'full');
     const [turnarounds, setTurnarounds] = useState(baseTurnarounds);
+    const [forwardWindow, setForwardWindow] = useState(DefaultFowardWindowInSeconds);
+    const [backwardWindow, setBackwardWindow] = useState(DefaultBackwardWindowInSeconds);
 
     const [watchlistTurnaroundIds, setWatchlistTurnaroundIds] = useState([]);
 
@@ -22,7 +24,7 @@ function App() {
         const interval = setInterval(() => {
             setTime((current) => {
                 const result = new Date(current);
-                result.setSeconds(result.getSeconds() + 25);
+                result.setSeconds(result.getSeconds() + 6);
                 return result;
             });
         }, 100);
@@ -75,10 +77,10 @@ function App() {
     };
 
     const visualizationStartTime = new Date(time);
-    visualizationStartTime.setSeconds(visualizationStartTime.getSeconds() - DefaultBackwardWindowInSeconds);
+    visualizationStartTime.setSeconds(visualizationStartTime.getSeconds() + backwardWindow);
 
     const visualizationEndTime = new Date(time);
-    visualizationEndTime.setSeconds(visualizationEndTime.getSeconds() + DefaultFowardWindowInSeconds);
+    visualizationEndTime.setSeconds(visualizationEndTime.getSeconds() + forwardWindow);
 
     return (
         <>
@@ -107,6 +109,8 @@ function App() {
                 onViewChange={(event, value) => setView(value)}
                 view={view}
                 gateConfig={gateConfig}
+                setForwardWindow={setForwardWindow}
+                setBackwardWindow={setBackwardWindow}
                 modifiedTurnarounds={filterModifiedTurnarounds(turnarounds)}
                 addTurnaroundToWatchlist={addTurnaroundToWatchlist}
                 numberOnWatchlist={watchlistTurnaroundIds.length}/>

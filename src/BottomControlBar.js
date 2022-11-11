@@ -16,12 +16,15 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import {useEffect, useRef, useState} from 'react';
 import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
+import TimeSelector from './TimeSelector';
 
 export function BottomControlBar({
     onViewChange,
     addTurnaroundToWatchlist,
     view,
     gateConfig,
+    setForwardWindow,
+    setBackwardWindow,
     modifiedTurnarounds,
     numberOnWatchlist,
     ...props
@@ -56,6 +59,19 @@ export function BottomControlBar({
             position="fixed"
             color="primary"
             sx={{top: 'auto', bottom: 0}}>
+
+            <Box
+                sx={{
+                    display: 'block',
+                    position: 'absolute',
+                    left: '40px',
+                    top: '50%',
+                    width: '25%',
+                    transform: 'translateY(-50%)'}}>
+                <TimeSelector
+                    setForwardWindow={setForwardWindow}
+                    setBackwardWindow={setBackwardWindow}></TimeSelector>
+            </Box>
             <BottomNavigation
                 onChange={onViewChange}
                 value={view}
@@ -85,7 +101,6 @@ export function BottomControlBar({
                     right: '15px',
                     top: '50%',
                     transform: 'translateY(-50%)'}}>
-
                 <div
                     hidden={!showChanges}
                     style={{
