@@ -22,7 +22,7 @@ function App() {
         const interval = setInterval(() => {
             setTime((current) => {
                 const result = new Date(current);
-                result.setSeconds(result.getSeconds() + 6);
+                result.setSeconds(result.getSeconds() + 25);
                 return result;
             });
         }, 100);

@@ -57,19 +57,29 @@ function GateChart({
                             dropTurnaroundHandler={assignTurnaroundToStand}
                             hideWhenEmpty={hideEmpty} // TODO: this still has bugs for non visible ta's
                         >
-                            {!!stand.turnarounds && stand.turnarounds.map((turnaround, turnaroundIndex)=> {
-                                const ibt = new Date(turnaround.inboundFlight.sbt);
-                                const obt = new Date(turnaround.outboundFlight.sbt);
-                                return (
-                                    <Turnaround
-                                        key={turnaround.turnaroundId}
-                                        turnaroundId={turnaround.turnaroundId}
-                                        inboundFlight={turnaround.inboundFlight}
-                                        ibt={ibt}
-                                        obt={obt}
-                                        outboundFlight={turnaround.outboundFlight}></Turnaround>
-                                );
-                            })}
+                            {!!stand.turnarounds &&
+                                stand.turnarounds
+                                    .filter((turnaround) => {
+                                        const ibt = new Date(turnaround.inboundFlight.sbt);
+                                        const obt = new Date(turnaround.outboundFlight.sbt);
+
+                                        return ibt < endTime && obt > startTime;
+                                    })
+                                    .map((turnaround, turnaroundIndex)=> {
+                                        const ibt = new Date(turnaround.inboundFlight.sbt);
+                                        const obt = new Date(turnaround.outboundFlight.sbt);
+
+                                        return (
+                                            <Turnaround
+                                                key={turnaround.turnaroundId}
+                                                turnaroundId={turnaround.turnaroundId}
+                                                inboundFlight={turnaround.inboundFlight}
+                                                ibt={ibt}
+                                                obt={obt}
+                                                outboundFlight={turnaround.outboundFlight}></Turnaround>
+                                        );
+                                    })
+                            }
                         </Gate>)}
                 </Pier>,
             )}
