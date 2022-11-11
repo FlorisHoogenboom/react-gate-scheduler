@@ -23,6 +23,8 @@ export function BottomControlBar({
     addTurnaroundToWatchlist,
     view,
     gateConfig,
+    forwardWindow,
+    backwardWindow,
     setForwardWindow,
     setBackwardWindow,
     modifiedTurnarounds,
@@ -69,6 +71,8 @@ export function BottomControlBar({
                     width: '25%',
                     transform: 'translateY(-50%)'}}>
                 <TimeSelector
+                    forwardWindow={forwardWindow}
+                    backwardWindow={backwardWindow}
                     setForwardWindow={setForwardWindow}
                     setBackwardWindow={setBackwardWindow}></TimeSelector>
             </Box>

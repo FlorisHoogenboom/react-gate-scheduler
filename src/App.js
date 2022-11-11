@@ -109,6 +109,8 @@ function App() {
                 onViewChange={(event, value) => setView(value)}
                 view={view}
                 gateConfig={gateConfig}
+                forwardWindow={forwardWindow}
+                backwardWindow={backwardWindow}
                 setForwardWindow={setForwardWindow}
                 setBackwardWindow={setBackwardWindow}
                 modifiedTurnarounds={filterModifiedTurnarounds(turnarounds)}
