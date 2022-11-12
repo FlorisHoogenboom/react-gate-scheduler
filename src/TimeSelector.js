@@ -9,6 +9,12 @@ function TimeSelector({
 }) {
     const minDistance = 3600;
 
+    const marks = [
+        {
+            value: 0,
+        },
+    ];
+
     const handleChange = (event, newValue, activeThumb) => {
         if (!Array.isArray(newValue)) {
             return;
@@ -34,8 +40,10 @@ function TimeSelector({
             valueLabelDisplay="auto"
             valueLabelFormat={getValuetext}
             disableSwap
+            step={15*60}
+            marks={marks}
             min={-3600}
-            max={24*3600}
+            max={6*3600}
         />
     );
 }
