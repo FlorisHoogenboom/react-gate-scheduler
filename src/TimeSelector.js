@@ -21,9 +21,9 @@ function TimeSelector({
         }
 
         if (activeThumb === 0) {
-            setBackwardWindow(Math.min(newValue[0], forwardWindow - minDistance));
+            setBackwardWindow(Math.min(newValue[0], forwardWindow - minDistance, 0));
         } else {
-            setForwardWindow(Math.max(newValue[1], backwardWindow + minDistance));
+            setForwardWindow(Math.max(newValue[1], backwardWindow + minDistance, 0));
         }
     };
 
@@ -42,7 +42,7 @@ function TimeSelector({
             disableSwap
             step={15*60}
             marks={marks}
-            min={-3600}
+            min={-2*3600}
             max={6*3600}
         />
     );
