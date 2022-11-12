@@ -36,6 +36,34 @@ function GateChart({
         return result;
     };
 
+    const renderTurnarounds = (turnarounds, startTime, endTime) => {
+        if (!!!turnarounds) {
+            return;
+        }
+
+        return (turnarounds
+            .filter((turnaround) => {
+                const ibt = new Date(turnaround.inboundFlight.sbt);
+                const obt = new Date(turnaround.outboundFlight.sbt);
+
+                return ibt < endTime && obt > startTime;
+            })
+            .map((turnaround, turnaroundIndex)=> {
+                const ibt = new Date(turnaround.inboundFlight.sbt);
+                const obt = new Date(turnaround.outboundFlight.sbt);
+
+                return (
+                    <Turnaround
+                        key={turnaround.turnaroundId}
+                        turnaroundId={turnaround.turnaroundId}
+                        inboundFlight={turnaround.inboundFlight}
+                        ibt={ibt}
+                        obt={obt}
+                        outboundFlight={turnaround.outboundFlight}></Turnaround>
+                );
+            }));
+    };
+
     return (
         <Stack spacing={2}>
             {(_.size(turnarounds) === 0) && <Typography>No turnarounds to display</Typography>}
@@ -57,29 +85,7 @@ function GateChart({
                             dropTurnaroundHandler={assignTurnaroundToStand}
                             hideWhenEmpty={hideEmpty} // TODO: this still has bugs for non visible ta's
                         >
-                            {!!stand.turnarounds &&
-                                stand.turnarounds
-                                    .filter((turnaround) => {
-                                        const ibt = new Date(turnaround.inboundFlight.sbt);
-                                        const obt = new Date(turnaround.outboundFlight.sbt);
-
-                                        return ibt < endTime && obt > startTime;
-                                    })
-                                    .map((turnaround, turnaroundIndex)=> {
-                                        const ibt = new Date(turnaround.inboundFlight.sbt);
-                                        const obt = new Date(turnaround.outboundFlight.sbt);
-
-                                        return (
-                                            <Turnaround
-                                                key={turnaround.turnaroundId}
-                                                turnaroundId={turnaround.turnaroundId}
-                                                inboundFlight={turnaround.inboundFlight}
-                                                ibt={ibt}
-                                                obt={obt}
-                                                outboundFlight={turnaround.outboundFlight}></Turnaround>
-                                        );
-                                    })
-                            }
+                            {renderTurnarounds(stand.turnarounds, startTime, endTime)}
                         </Gate>)}
                 </Pier>,
             )}
