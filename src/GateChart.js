@@ -80,6 +80,7 @@ function GateChart({
                         inboundFlight={turnaround.inboundFlight}
                         ibt={ibt}
                         obt={obt}
+                        hasChanged={!!turnaround.previous}
                         outboundFlight={turnaround.outboundFlight}
                         renderLight={!!renderLight}></Turnaround>
                 );

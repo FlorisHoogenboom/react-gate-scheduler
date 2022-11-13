@@ -12,8 +12,19 @@ function Turnaround({
     sobtMargin,
     fractionDone,
     renderLight,
+    hasChanged,
 }) {
     const theme = useTheme();
+
+    let bgColorDark;
+    let bgColorMain;
+    if (!!!hasChanged) {
+        bgColorMain = theme.palette.secondary.light;
+        bgColorDark = theme.palette.secondary.main;
+    } else {
+        bgColorDark= theme.palette.error.main;
+        bgColorMain = theme.palette.warning.light;
+    }
 
     const rootStyle = {
         height: '100%',
@@ -22,7 +33,7 @@ function Turnaround({
         borderRadius: '25px',
         transform: 'translate(0, 0)', // Needed for proper rendering
         fontSize: '12px',
-        background: theme.palette.secondary.light,
+        background: bgColorMain,
         color: theme.palette.secondary.contrastText,
         mixBlendMode: 'color-burn',
         boxSizing: 'border-box',
@@ -78,7 +89,7 @@ function Turnaround({
         const percentageDone = (fractionDone * 100).toFixed(5) + '%';
         computedStyle = {
             ...computedStyle,
-            background: `linear-gradient(90deg, ${theme.palette.secondary.main} ${percentageDone}, ${theme.palette.secondary.light} ${percentageDone})`, // eslint-disable-line max-len
+            background: `linear-gradient(90deg, ${bgColorDark} ${percentageDone}, ${bgColorMain} ${percentageDone})`, // eslint-disable-line max-len
         };
     }
 
