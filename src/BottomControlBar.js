@@ -12,6 +12,7 @@ import {
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import {useEffect, useRef, useState} from 'react';
@@ -99,6 +100,10 @@ export function BottomControlBar({
                         </Badge>
                     }
                     touchRippleRef={rippleRef}/>
+                <BottomNavigationAction
+                    value="changes"
+                    label="Changes"
+                    icon={<TrackChangesIcon/>}/>
             </BottomNavigation>
 
             <Box

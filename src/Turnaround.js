@@ -11,7 +11,7 @@ function Turnaround({
     sibtMargin,
     sobtMargin,
     fractionDone,
-    renderLight,
+    isMock,
     hasChanged,
 }) {
     const theme = useTheme();
@@ -45,7 +45,7 @@ function Turnaround({
             isDragging: !!monitor.isDragging(),
         }),
         canDrag: () => {
-            return fractionDone === 0 && !!!renderLight;
+            return fractionDone === 0 && !!!isMock;
         },
         item: {
             turnaroundId: turnaroundId,
@@ -74,7 +74,7 @@ function Turnaround({
         };
     }
 
-    if (renderLight) {
+    if (isMock) {
         Object.assign(
             computedStyle,
             {
@@ -85,7 +85,7 @@ function Turnaround({
         );
     }
 
-    if (fractionDone && !renderLight) {
+    if (fractionDone && !isMock) {
         const percentageDone = (fractionDone * 100).toFixed(5) + '%';
         computedStyle = {
             ...computedStyle,

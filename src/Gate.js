@@ -27,34 +27,31 @@ function Gate({
     style,
     hideWhenEmpty,
     turnarounds,
-    mockTurnarounds,
-    showMockTurnarounds,
-    ...props
 }) {
     turnarounds = React.Children.toArray(turnarounds);
 
     const theme = useTheme();
 
     const doesOverlap = (ibt, obt) => {
-        if (!Array.isArray(turnarounds)) {
-            return false;
-        }
-
         return !turnarounds.every((turnaround) => {
+            if (!!turnaround.props.isMock) {
+                return true;
+            }
+
             if (turnaround.props.ibt >= obt) {
                 return true;
             } else {
                 return turnaround.props.obt <= ibt;
-            };
+            }
         });
     };
 
     const [{canDrop, isOver}, dropRef] = useDrop(() => ({
         accept: DragTypes.FLIGHT,
-        drop: (item, monitor) => {
+        drop: (item) => {
             dropTurnaroundHandler(item.turnaroundId, pierId, standId);
         },
-        canDrop: (item, monitor) => !doesOverlap(item.ibt, item.obt),
+        canDrop: (item) => !doesOverlap(item.ibt, item.obt),
         collect: (monitor) => ({
             canDrop: !!monitor.canDrop(),
             isOver: !!monitor.isOver(),
@@ -175,9 +172,6 @@ function Gate({
                             <div style={innerTimelineStyle}>
                                 {!!turnarounds &&
                                     turnarounds.map(addPositioningToTurnaround)}
-                                {!!showMockTurnarounds &&
-                                    !!mockTurnarounds &&
-                                    mockTurnarounds.map(addPositioningToTurnaround)}
                                 <div style={currentTimeBarStyle}></div>
                             </div>
                         </div>

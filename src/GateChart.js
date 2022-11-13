@@ -82,9 +82,20 @@ function GateChart({
                         obt={obt}
                         hasChanged={!!turnaround.previous}
                         outboundFlight={turnaround.outboundFlight}
-                        renderLight={!!renderLight}></Turnaround>
+                        isMock={!!renderLight}></Turnaround>
                 );
             }));
+    };
+
+    const determineTurnaroundsToRender = (stand, startTime, endTime, showMockTurnarounds) => {
+        if (!showMockTurnarounds) {
+            return renderTurnarounds(stand.turnarounds, startTime, endTime);
+        } else {
+            return _.union(
+                renderTurnarounds(stand.turnarounds, startTime, endTime),
+                renderTurnarounds(stand.previousTurnarounds, startTime, endTime, true),
+            );
+        }
     };
 
     return (
@@ -107,9 +118,7 @@ function GateChart({
                             standName={stand.name}
                             dropTurnaroundHandler={assignTurnaroundToStand}
                             hideWhenEmpty={hideEmpty} // TODO: this still has bugs for non visible ta's
-                            turnarounds={renderTurnarounds(stand.turnarounds, startTime, endTime)}
-                            mockTurnarounds={renderTurnarounds(stand.previousTurnarounds, startTime, endTime, true)}
-                            showMockTurnarounds={!!showMockTurnarounds}
+                            turnarounds={determineTurnaroundsToRender(stand, startTime, endTime, showMockTurnarounds)}
                         ></Gate>)}
                 </Pier>,
             )}

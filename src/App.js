@@ -73,7 +73,7 @@ function App() {
     const resetAllTurnarounds = () => {
         setTurnarounds((previous) => {
             let results = _.cloneDeep(previous);
-            results = _.map(results, (turnaround, turnaroundId) => {
+            results = _.map(results, (turnaround) => {
                 if (!!turnaround.previous) {
                     turnaround.pier = turnaround.previous.pier;
                     turnaround.stand = turnaround.previous.stand;
@@ -119,6 +119,18 @@ function App() {
                     endTime={visualizationEndTime}
                     assignTurnaroundToStand={assignTurnaroundToStand}
                     hideEmpty={true}></GateChart>
+            </div>
+
+            <div hidden={view !== 'changes'} style={{padding: '5px'}}>
+                <GateChart
+                    turnarounds={filterModifiedTurnarounds(turnarounds)}
+                    gateConfig={gateConfig}
+                    currentTime={time}
+                    startTime={visualizationStartTime}
+                    endTime={visualizationEndTime}
+                    assignTurnaroundToStand={assignTurnaroundToStand}
+                    hideEmpty={true}
+                    showMockTurnarounds={true}></GateChart>
             </div>
 
             <BottomControlBar
