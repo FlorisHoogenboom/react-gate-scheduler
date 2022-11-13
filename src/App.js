@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
-import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, StartTime} from './Constants';
 import _ from 'lodash';
 
 import GateChart from './GateChart';
 import gateConfig from './gateConfig.json';
 import baseTurnarounds from './turnarounds.json';
 import {BottomControlBar} from './BottomControlBar';
+import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, StartTime} from './Constants';
 
 
 function App() {
@@ -70,6 +70,23 @@ function App() {
         });
     };
 
+    const resetAllTurnarounds = () => {
+        setTurnarounds((previous) => {
+            let results = _.cloneDeep(previous);
+            results = _.map(results, (turnaround, turnaroundId) => {
+                if (!!turnaround.previous) {
+                    turnaround.pier = turnaround.previous.pier;
+                    turnaround.stand = turnaround.previous.stand;
+                    delete turnaround.previous;
+                }
+
+                return turnaround;
+            });
+
+            return results;
+        });
+    };
+
     const filterModifiedTurnarounds = (turnarounds) => {
         return _.pickBy(turnarounds, (val) => !!val.previous);
     };
@@ -115,7 +132,8 @@ function App() {
                 modifiedTurnarounds={filterModifiedTurnarounds(turnarounds)}
                 addTurnaroundToWatchlist={addTurnaroundToWatchlist}
                 numberOnWatchlist={watchlistTurnaroundIds.length}
-                onViewChanges={setShowChanges}/>
+                onViewChanges={setShowChanges}
+                onReset={() => resetAllTurnarounds}/>
         </>
     );
 }

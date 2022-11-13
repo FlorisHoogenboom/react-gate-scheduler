@@ -12,11 +12,13 @@ import {
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import {useEffect, useRef, useState} from 'react';
 import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
 import TimeSelector from './TimeSelector';
+
 
 export function BottomControlBar({
     onViewChange,
@@ -30,6 +32,7 @@ export function BottomControlBar({
     modifiedTurnarounds,
     numberOnWatchlist,
     onViewChanges,
+    onReset,
 }) {
     const rippleRef = useRef();
 
@@ -139,9 +142,15 @@ export function BottomControlBar({
 
                 </div>
 
+
                 <IconButton
                     size="large"
-                    aria-label="show 17 new notifications"
+                    disabled={numberOfUnsavedChanges === 0}
+                    onClick={onReset()}>
+                    <DeleteSweepIcon/>
+                </IconButton>
+                <IconButton
+                    size="large"
                     onMouseOver={() => {
                         if (numberOfUnsavedChanges > 0) {
                             setShowChanges(true);
