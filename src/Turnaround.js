@@ -34,7 +34,7 @@ function Turnaround({
             isDragging: !!monitor.isDragging(),
         }),
         canDrag: () => {
-            return fractionDone === 0;
+            return fractionDone === 0 && !!!renderLight;
         },
         item: {
             turnaroundId: turnaroundId,
