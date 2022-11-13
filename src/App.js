@@ -38,10 +38,7 @@ function App() {
             if (!result[turnaroundId].previous) {
                 // Save the previous turnaround if this is the first time
                 // this flight has moved
-                result[turnaroundId].previous = {
-                    pier: result[turnaroundId].pier,
-                    stand: result[turnaroundId].stand,
-                };
+                result[turnaroundId].previous = prevState[turnaroundId];
             }
 
             result[turnaroundId].pier = pierId;

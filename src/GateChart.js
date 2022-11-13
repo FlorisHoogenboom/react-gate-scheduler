@@ -1,9 +1,9 @@
 import {Stack, Typography} from '@mui/material';
+import _ from 'lodash';
 
 import Gate from './Gate';
 import Turnaround from './Turnaround';
 import Pier from './Pier';
-import _ from 'lodash';
 
 
 function GateChart({
@@ -17,20 +17,42 @@ function GateChart({
     hideEmpty,
     ...props
 }) {
+    const addTurnaroundToResult = (result, pier, stand, turnaround, turnaroundId, subpath) => {
+        subpath = subpath || 'turnarounds';
+        if (!!!result[pier]['stands'][stand][subpath]) {
+            result[pier]['stands'][stand][subpath] = [];
+        }
+        result[pier]['stands'][stand][subpath].push({
+            ...turnaround,
+            turnaroundId,
+        });
+
+        return result;
+    };
+
+
     const mapTurnaroundToGates = (gateConfig, tunrarounds) => {
-        const result = _.cloneDeep(gateConfig);
+        let result = _.cloneDeep(gateConfig);
 
         for (const [turnaroundId, turnaround] of Object.entries(tunrarounds)) {
-            const pier = turnaround['pier'];
-            const stand = turnaround['stand'];
-
-            if (!!!result[pier]['stands'][stand]['turnarounds']) {
-                result[pier]['stands'][stand]['turnarounds'] = [];
-            }
-            result[pier]['stands'][stand]['turnarounds'].push({
-                ...turnaround,
+            result = addTurnaroundToResult(
+                result,
+                turnaround['pier'],
+                turnaround['stand'],
+                turnaround,
                 turnaroundId,
-            });
+            );
+
+            if (!!turnaround.previous) {
+                result = addTurnaroundToResult(
+                    result,
+                    turnaround.previous['pier'],
+                    turnaround.previous['stand'],
+                    turnaround.previous,
+                    turnaroundId,
+                    'previousTurnarounds',
+                );
+            }
         }
 
         return result;
@@ -38,7 +60,7 @@ function GateChart({
 
     const renderTurnarounds = (turnarounds, startTime, endTime) => {
         if (!!!turnarounds) {
-            return;
+            return false;
         }
 
         return (turnarounds
@@ -84,9 +106,10 @@ function GateChart({
                             standName={stand.name}
                             dropTurnaroundHandler={assignTurnaroundToStand}
                             hideWhenEmpty={hideEmpty} // TODO: this still has bugs for non visible ta's
-                        >
-                            {renderTurnarounds(stand.turnarounds, startTime, endTime)}
-                        </Gate>)}
+                            turnarounds={renderTurnarounds(stand.turnarounds, startTime, endTime)}
+                            mockTurnarounds={renderTurnarounds(stand.previousTurnarounds, startTime, endTime)}
+                            showMockTurnarounds
+                        ></Gate>)}
                 </Pier>,
             )}
         </Stack>

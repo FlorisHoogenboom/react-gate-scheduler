@@ -6,7 +6,6 @@ import {useDrop} from 'react-dnd';
 import {DragTypes} from './Constants';
 import {Avatar} from '@mui/material';
 
-
 function getFractionOfWindow(
     startTime,
     endTime,
@@ -27,17 +26,21 @@ function Gate({
     dropTurnaroundHandler,
     style,
     hideWhenEmpty,
-    children,
+    turnarounds,
+    mockTurnarounds,
+    showMockTurnarounds,
     ...props
 }) {
+    turnarounds = React.Children.toArray(turnarounds);
+
     const theme = useTheme();
 
     const doesOverlap = (ibt, obt) => {
-        if (!Array.isArray(children)) {
+        if (!Array.isArray(turnarounds)) {
             return false;
         }
 
-        return !children.every((turnaround) => {
+        return !turnarounds.every((turnaround) => {
             if (turnaround.props.ibt >= obt) {
                 return true;
             } else {
@@ -57,7 +60,7 @@ function Gate({
             isOver: !!monitor.isOver(),
         }),
 
-    }), [children]);
+    }), [turnarounds]);
 
     const rootStyle = {
         width: '100%',
@@ -127,9 +130,33 @@ function Gate({
         };
     }
 
+    const addPositioningToTurnaround = (child) => {
+        const sibt = child.props.ibt;
+        const sobt = child.props.obt;
+        const startFraction = getFractionOfWindow(
+            startTime, endTime, sibt,
+        );
+        const endFraction = getFractionOfWindow(
+            startTime, endTime, sobt,
+        );
+        const left = (startFraction * 100).toFixed(2) + '%';
+        const right = (100 - endFraction * 100).toFixed(2) + '%';
+
+        const fractionDone = _.clamp(
+            getFractionOfWindow(sibt, sobt, currentTime),
+            0,
+            1,
+        );
+
+        return React.cloneElement(
+            child,
+            {sibtMargin: left, sobtMargin: right, fractionDone: fractionDone},
+        );
+    };
+
     return (
         <>
-            {((!children || !children.length) && hideWhenEmpty) ?
+            {((!turnarounds || !turnarounds.length) && hideWhenEmpty) ?
                 (
                     <></>
                 ) : (
@@ -146,29 +173,11 @@ function Gate({
 
                         <div style={timelineStyle}>
                             <div style={innerTimelineStyle}>
-                                {!!children && children.map((child) => {
-                                    const sibt = child.props.ibt;
-                                    const sobt = child.props.obt;
-                                    const startFraction = getFractionOfWindow(
-                                        startTime, endTime, sibt,
-                                    );
-                                    const endFraction = getFractionOfWindow(
-                                        startTime, endTime, sobt,
-                                    );
-                                    const left = (startFraction * 100).toFixed(2) + '%';
-                                    const right = (100 - endFraction * 100).toFixed(2) + '%';
-
-                                    const fractionDone = _.clamp(
-                                        getFractionOfWindow(sibt, sobt, currentTime),
-                                        0,
-                                        1,
-                                    );
-
-                                    return React.cloneElement(
-                                        child,
-                                        {sibtMargin: left, sobtMargin: right, fractionDone: fractionDone},
-                                    );
-                                })}
+                                {!!turnarounds &&
+                                    turnarounds.map(addPositioningToTurnaround)}
+                                {!!showMockTurnarounds &&
+                                    !!mockTurnarounds &&
+                                    mockTurnarounds.map(addPositioningToTurnaround)}
                                 <div style={currentTimeBarStyle}></div>
                             </div>
                         </div>
