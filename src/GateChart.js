@@ -57,7 +57,7 @@ function GateChart({
         return result;
     };
 
-    const renderTurnarounds = (turnarounds, startTime, endTime) => {
+    const renderTurnarounds = (turnarounds, startTime, endTime, renderLight) => {
         if (!!!turnarounds) {
             return false;
         }
@@ -80,7 +80,8 @@ function GateChart({
                         inboundFlight={turnaround.inboundFlight}
                         ibt={ibt}
                         obt={obt}
-                        outboundFlight={turnaround.outboundFlight}></Turnaround>
+                        outboundFlight={turnaround.outboundFlight}
+                        renderLight={!!renderLight}></Turnaround>
                 );
             }));
     };
@@ -106,7 +107,7 @@ function GateChart({
                             dropTurnaroundHandler={assignTurnaroundToStand}
                             hideWhenEmpty={hideEmpty} // TODO: this still has bugs for non visible ta's
                             turnarounds={renderTurnarounds(stand.turnarounds, startTime, endTime)}
-                            mockTurnarounds={renderTurnarounds(stand.previousTurnarounds, startTime, endTime)}
+                            mockTurnarounds={renderTurnarounds(stand.previousTurnarounds, startTime, endTime, true)}
                             showMockTurnarounds={!!showMockTurnarounds}
                         ></Gate>)}
                 </Pier>,

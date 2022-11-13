@@ -11,7 +11,7 @@ function Turnaround({
     sibtMargin,
     sobtMargin,
     fractionDone,
-    ...props
+    renderLight,
 }) {
     const theme = useTheme();
 
@@ -25,6 +25,7 @@ function Turnaround({
         background: theme.palette.secondary.light,
         color: theme.palette.secondary.contrastText,
         mixBlendMode: 'color-burn',
+        boxSizing: 'border-box',
     };
 
     const [{isDragging}, drag] = useDrag(() => ({
@@ -32,7 +33,7 @@ function Turnaround({
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
-        canDrag: (monitor) => {
+        canDrag: () => {
             return fractionDone === 0;
         },
         item: {
@@ -42,11 +43,11 @@ function Turnaround({
         },
     }), [fractionDone]);
 
-    let computedStyle;
+    let computedStyle = rootStyle;
 
     if (sibtMargin && sobtMargin) {
         computedStyle = {
-            ...rootStyle,
+            ...computedStyle,
             ...{
                 left: sibtMargin,
                 right: sobtMargin,
@@ -55,14 +56,25 @@ function Turnaround({
         };
     } else {
         computedStyle = {
-            ...rootStyle,
+            ...computedStyle,
             ...{
                 width: '100%',
             },
         };
     }
 
-    if (fractionDone) {
+    if (renderLight) {
+        Object.assign(
+            computedStyle,
+            {
+                background: '#FFFFFF',
+                color: '#000000',
+                border: `2px dashed ${theme.palette.primary.dark}`,
+            },
+        );
+    }
+
+    if (fractionDone && !renderLight) {
         const percentageDone = (fractionDone * 100).toFixed(5) + '%';
         computedStyle = {
             ...computedStyle,
