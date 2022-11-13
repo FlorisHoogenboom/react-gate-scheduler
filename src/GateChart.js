@@ -7,7 +7,6 @@ import Pier from './Pier';
 
 
 function GateChart({
-    style,
     currentTime,
     startTime,
     endTime,
@@ -15,7 +14,7 @@ function GateChart({
     turnarounds,
     assignTurnaroundToStand,
     hideEmpty,
-    ...props
+    showMockTurnarounds,
 }) {
     const addTurnaroundToResult = (result, pier, stand, turnaround, turnaroundId, subpath) => {
         subpath = subpath || 'turnarounds';
@@ -70,7 +69,7 @@ function GateChart({
 
                 return ibt < endTime && obt > startTime;
             })
-            .map((turnaround, turnaroundIndex)=> {
+            .map((turnaround)=> {
                 const ibt = new Date(turnaround.inboundFlight.sbt);
                 const obt = new Date(turnaround.outboundFlight.sbt);
 
@@ -95,7 +94,7 @@ function GateChart({
                     key={pierId}
                     name={pier.name}
                     hideWhenEmpty={hideEmpty}>
-                    {Object.entries(pier.stands).map(([standId, stand], i)=>
+                    {Object.entries(pier.stands).map(([standId, stand])=>
                         <Gate
                             key={standId}
                             currentTime={currentTime}
@@ -108,7 +107,7 @@ function GateChart({
                             hideWhenEmpty={hideEmpty} // TODO: this still has bugs for non visible ta's
                             turnarounds={renderTurnarounds(stand.turnarounds, startTime, endTime)}
                             mockTurnarounds={renderTurnarounds(stand.previousTurnarounds, startTime, endTime)}
-                            showMockTurnarounds
+                            showMockTurnarounds={!!showMockTurnarounds}
                         ></Gate>)}
                 </Pier>,
             )}

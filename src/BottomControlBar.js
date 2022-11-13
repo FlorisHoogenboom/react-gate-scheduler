@@ -29,7 +29,7 @@ export function BottomControlBar({
     setBackwardWindow,
     modifiedTurnarounds,
     numberOnWatchlist,
-    ...props
+    onViewChanges,
 }) {
     const rippleRef = useRef();
 
@@ -37,7 +37,7 @@ export function BottomControlBar({
 
     const [{isOver}, dropRef] = useDrop(() => ({
         accept: DragTypes.FLIGHT,
-        drop: (item, monitor) => {
+        drop: (item) => {
             addTurnaroundToWatchlist(item.turnaroundId);
         },
         collect: (monitor) => ({
@@ -142,8 +142,16 @@ export function BottomControlBar({
                 <IconButton
                     size="large"
                     aria-label="show 17 new notifications"
-                    onMouseOver={() => numberOfUnsavedChanges > 0 && setShowChanges(true)}
-                    onMouseOut={() => setShowChanges(false)}
+                    onMouseOver={() => {
+                        if (numberOfUnsavedChanges > 0) {
+                            setShowChanges(true);
+                            onViewChanges(true);
+                        }
+                    }}
+                    onMouseOut={() => {
+                        setShowChanges(false);
+                        onViewChanges(false);
+                    }}
                     disabled={numberOfUnsavedChanges === 0}>
                     <Badge badgeContent={numberOfUnsavedChanges} color="secondary">
                         <PublishedWithChangesIcon/>

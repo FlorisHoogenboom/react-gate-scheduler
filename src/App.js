@@ -14,6 +14,7 @@ function App() {
     );
     const [view, setView] = useState(() => 'full');
     const [turnarounds, setTurnarounds] = useState(baseTurnarounds);
+    const [showChanges, setShowChanges] = useState(false);
     const [forwardWindow, setForwardWindow] = useState(DefaultFowardWindowInSeconds);
     const [backwardWindow, setBackwardWindow] = useState(DefaultBackwardWindowInSeconds);
 
@@ -89,7 +90,8 @@ function App() {
                     startTime={visualizationStartTime}
                     endTime={visualizationEndTime}
                     assignTurnaroundToStand={assignTurnaroundToStand}
-                    hideEmpty={false}></GateChart>
+                    hideEmpty={false}
+                    showMockTurnarounds={showChanges}></GateChart>
             </div>
             <div hidden={view !== 'watchlist'} style={{padding: '5px'}}>
                 <GateChart
@@ -112,7 +114,8 @@ function App() {
                 setBackwardWindow={setBackwardWindow}
                 modifiedTurnarounds={filterModifiedTurnarounds(turnarounds)}
                 addTurnaroundToWatchlist={addTurnaroundToWatchlist}
-                numberOnWatchlist={watchlistTurnaroundIds.length}/>
+                numberOnWatchlist={watchlistTurnaroundIds.length}
+                onViewChanges={setShowChanges}/>
         </>
     );
 }
