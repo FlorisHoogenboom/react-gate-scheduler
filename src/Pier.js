@@ -21,7 +21,7 @@ function Pier({
     };
 
     const empty = (children
-        .map((turnaround) => turnaround.props.children ? turnaround.props.children.length : 0)
+        .map((turnaround) => turnaround.props.turnarounds ? turnaround.props.turnarounds.length : 0)
         .reduce((p, c) => p + c, 0));
 
     return (
