@@ -3,9 +3,9 @@ import _ from 'lodash';
 
 import GateChart from './GateChart';
 import gateConfig from './gateConfig.json';
-import baseTurnarounds from './turnarounds.json';
 import {BottomControlBar} from './BottomControlBar';
 import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, StartTime} from './Constants';
+import {getTurnarounds} from './data';
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         () => StartTime,
     );
     const [view, setView] = useState(() => 'full');
-    const [turnarounds, setTurnarounds] = useState(baseTurnarounds);
+    const [turnarounds, setTurnarounds] = useState({});
     const [showChanges, setShowChanges] = useState(false);
     const [forwardWindow, setForwardWindow] = useState(DefaultFowardWindowInSeconds);
     const [backwardWindow, setBackwardWindow] = useState(DefaultBackwardWindowInSeconds);
@@ -32,6 +32,13 @@ function App() {
 
         return () => clearInterval(interval);
     }, []);
+
+    useEffect( () => {
+        (async function inner() {
+            const data = await getTurnarounds();
+            setTurnarounds(data);
+        })();
+    });
 
     const assignTurnaroundToStand = (turnaroundId, pierId, standId) => {
         setTurnarounds((prevState) => {
