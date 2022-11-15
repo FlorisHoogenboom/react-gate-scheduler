@@ -10,7 +10,7 @@ This project is ofcourse intended to be connected to some backend. However, to r
 
 ```shell
 $ npm install -g json-server
-$ json-server --watch ./mock_data/db.json
+$ json-server --port 8000 --watch mock_data/db.json
 ```
 
 This runs a mock server whith the following endpoints:
