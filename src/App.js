@@ -36,9 +36,41 @@ function App() {
     useEffect( () => {
         (async function inner() {
             const data = await getTurnarounds();
-            setTurnarounds(data);
+            setTurnarounds((currentTurnarounds) => {
+                // Merge the current turnarounds (and their changes) with the new state
+                const result = _.cloneDeep(currentTurnarounds);
+                const existingKeys = Object.keys(currentTurnarounds);
+                const newKeys = Object.keys(data);
+
+                const keysToAdd = _.difference(newKeys, existingKeys);
+                const keysToRemove = _.difference(existingKeys, newKeys);
+                const keysToUpdate = _.intersection(existingKeys, newKeys);
+
+
+                // Remove the keys that no longer exist remotely
+                keysToRemove.forEach((key) => {
+                    delete result[key];
+                });
+
+                // Add new turnarounds that are not known yet
+                keysToAdd.forEach((key) => {
+                    result[key] = data[key];
+                });
+
+                keysToUpdate.forEach((key) => {
+                    currentTurnarounds[key].inboundFlight = data[key].inboundFlight;
+                    currentTurnarounds[key].outboundFlight = data[key].outboundFlight;
+
+                    if (currentTurnarounds[key].previous) {
+                        currentTurnarounds[key].previous.inboundFlight = data[key].inboundFlight;
+                        currentTurnarounds[key].previous.outboundFlight = data[key].outboundFlight;
+                    }
+                });
+
+                return result;
+            });
         })();
-    });
+    }, [time]);
 
     const assignTurnaroundToStand = (turnaroundId, pierId, standId) => {
         setTurnarounds((prevState) => {
