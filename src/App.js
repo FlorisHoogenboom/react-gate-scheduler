@@ -2,10 +2,9 @@ import {useEffect, useState} from 'react';
 import _ from 'lodash';
 
 import GateChart from './GateChart';
-import gateConfig from './gateConfig.json';
 import {BottomControlBar} from './BottomControlBar';
 import {DefaultBackwardWindowInSeconds, DefaultFowardWindowInSeconds, StartTime} from './Constants';
-import {getTurnarounds} from './data';
+import {getGateConfig, getTurnarounds} from './data';
 
 
 function App() {
@@ -14,6 +13,7 @@ function App() {
     );
     const [view, setView] = useState(() => 'full');
     const [turnarounds, setTurnarounds] = useState({});
+    const [gateConfig, setGateConfig] = useState({});
     const [showChanges, setShowChanges] = useState(false);
     const [forwardWindow, setForwardWindow] = useState(DefaultFowardWindowInSeconds);
     const [backwardWindow, setBackwardWindow] = useState(DefaultBackwardWindowInSeconds);
@@ -25,7 +25,7 @@ function App() {
         const interval = setInterval(() => {
             setTime((current) => {
                 const result = new Date(current);
-                result.setSeconds(result.getSeconds() + 6);
+                result.setSeconds(result.getSeconds() + 3);
                 return result;
             });
         }, 100);
@@ -34,8 +34,7 @@ function App() {
     }, []);
 
     useEffect( () => {
-        (async function inner() {
-            const data = await getTurnarounds();
+        getTurnarounds().then((data) => {
             setTurnarounds((currentTurnarounds) => {
                 // Merge the current turnarounds (and their changes) with the new state
                 const result = _.cloneDeep(currentTurnarounds);
@@ -69,8 +68,15 @@ function App() {
 
                 return result;
             });
-        })();
+        });
     }, [time]);
+
+    useEffect(() => {
+        (async function inner() {
+            const data = await getGateConfig();
+            setGateConfig(data);
+        })();
+    }, []);
 
     const assignTurnaroundToStand = (turnaroundId, pierId, standId) => {
         setTurnarounds((prevState) => {
@@ -90,7 +96,7 @@ function App() {
             ) {
                 // If we've just moved this flight back to it's orignal position
                 // remove the previous state as a signal this flight has not moved.
-                result[turnaroundId].previous = null;
+                delete result[turnaroundId].previous;
             }
 
             return result;
@@ -122,12 +128,14 @@ function App() {
                 return turnaround;
             });
 
-            return results;
+            return _.keyBy(results, 'id');
         });
     };
 
-    const filterModifiedTurnarounds = (turnarounds) => {
-        return _.pickBy(turnarounds, (val) => !!val.previous);
+    const filterModifiedTurnarounds = (tas) => {
+        return _.pickBy(tas, (val) => {
+            return !!val && !!val.previous;
+        });
     };
 
     const visualizationStartTime = new Date(time);

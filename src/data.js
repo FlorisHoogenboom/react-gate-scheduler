@@ -12,3 +12,13 @@ export async function getTurnarounds() {
     return _.keyBy(await response.json(), 'id');
 }
 
+export async function getGateConfig() {
+    const endpoint = new URL(`/gateConfig`, ROOT_URI);
+
+    const response = await window.fetch(endpoint, {
+        method: 'GET',
+    });
+
+    return response.json();
+}
+

@@ -31,6 +31,10 @@ function GateChart({
 
 
     const mapTurnaroundToGates = (gateConfig, tunrarounds) => {
+        if (_.isEmpty(gateConfig)) {
+            return gateConfig;
+        }
+
         let result = _.cloneDeep(gateConfig);
 
         for (const [turnaroundId, turnaround] of Object.entries(tunrarounds)) {
